@@ -1,0 +1,12 @@
+.font-poppins {
+    font-family: 'Poppins', sans-serif;
+}
+.footer-link a {
+    all: unset;
+    cursor: pointer;
+    display: inline;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}

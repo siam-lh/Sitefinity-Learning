@@ -1,0 +1,130 @@
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹Db Migration Complexity: Extending›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹Adding a column(s) on an existing table(s).›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹Adding a foreign key constraint(s) to a new table(s), the create table statement(s) is included as well.›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹Adding a new table(s).›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹-- Telerik.Sitefinity.DynamicTypes.Model.Cars.Company
+CREATE TABLE [cars_company] (
+    [base_id] uniqueidentifier NOT NULL,
+    [Title] NVARCHAR(255) NULL,             -- Company.Title
+    [Name] NVARCHAR(50) NULL,               -- Company.Name
+    CONSTRAINT [pk_cars_company] PRIMARY KEY ([base_id])
+)›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹-- add column for field <internal-class-id>
+ALTER TABLE [sf_dynamic_content] ADD [voa_class] int NULL›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹UPDATE [sf_dynamic_content] SET [voa_class] = 0›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: cc5068a8-58da-489a-be31-e06eeb4f4f01
+
+Timestamp: 7/10/2025 6:23:03 AM
+
+Message: ‹‹‹ALTER TABLE [sf_dynamic_content] ALTER COLUMN [voa_class] int NOT NULL›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: 215c4149-8335-448b-bff6-26d5bb0e0012
+
+Timestamp: 7/10/2025 6:32:28 AM
+
+Message: ‹‹‹Db Migration Complexity: Extending›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: 215c4149-8335-448b-bff6-26d5bb0e0012
+
+Timestamp: 7/10/2025 6:32:28 AM
+
+Message: ‹‹‹Adding a foreign key constraint(s) to an existing table(s).›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: 215c4149-8335-448b-bff6-26d5bb0e0012
+
+Timestamp: 7/10/2025 6:32:28 AM
+
+Message: ‹‹‹Adding a foreign key constraint(s) to a new table(s), the create table statement(s) is included as well.›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: 215c4149-8335-448b-bff6-26d5bb0e0012
+
+Timestamp: 7/10/2025 6:32:28 AM
+
+Message: ‹‹‹Adding a new table(s).›››
+
+
+----------------------------------------
+----------------------------------------
+ActivityId: 215c4149-8335-448b-bff6-26d5bb0e0012
+
+Timestamp: 7/10/2025 6:32:28 AM
+
+Message: ‹‹‹-- Telerik.Sitefinity.DynamicTypes.Model.Cars.Models
+CREATE TABLE [cars_models] (
+    [base_id] uniqueidentifier NOT NULL,
+    [Title] NVARCHAR(255) NULL,             -- Models.Title
+    [Model] NVARCHAR(50) NULL,              -- Models.Model
+    CONSTRAINT [pk_cars_models] PRIMARY KEY ([base_id])
+)›››
+
+
+----------------------------------------

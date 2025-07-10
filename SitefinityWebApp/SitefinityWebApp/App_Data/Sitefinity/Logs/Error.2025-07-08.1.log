@@ -1,0 +1,117 @@
+----------------------------------------
+ActivityId: 22bdfa40-3650-4bb8-bbdb-2c09355de63d
+
+Timestamp: 7/7/2025 10:29:21 AM
+
+Message: HandlingInstanceID: 185c2a8e-87a8-4679-8c23-78b34e6bb513
+An exception of type 'System.ArgumentOutOfRangeException' occurred and was caught.
+----------------------------------------------------------------------------------
+07/07/2025 16:29:21
+Type : System.ArgumentOutOfRangeException, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+Message : ‹‹‹Specified argument was out of the range of valid values.
+Parameter name: name›››
+Source : Telerik.Sitefinity.Utilities
+Help link : 
+ActualValue : 
+ParamName : ‹‹‹name›››
+Data : ‹‹‹System.Collections.ListDictionaryInternal›››
+TargetSite : ‹‹‹System.Type GetType(System.String, Boolean, Boolean)›››
+HResult : ‹‹‹-2146233086›››
+Stack Trace :    at Telerik.Sitefinity.Utilities.TypeConverters.TypeResolutionService.GetType(String name, Boolean throwOnError, Boolean ignoreCase)
+   at Telerik.Sitefinity.Utilities.TypeConverters.TypeResolutionService.GetType(String name)
+   at Telerik.Sitefinity.Modules.ControlTemplates.ControlTemplates.GetControlTypeFromKey(String key)
+   at Telerik.Sitefinity.Modules.ControlTemplates.Web.Services.ControlTemplateService.SaveControlTemplateInternal(ItemContext`1 context, String id, String providerName)
+   at SyncInvokeSaveControlTemplate(Object , Object[] , Object[] )
+   at System.ServiceModel.Dispatcher.SyncMethodInvoker.Invoke(Object instance, Object[] inputs, Object[]& outputs)
+   at System.ServiceModel.Dispatcher.DispatchOperationRuntime.InvokeBegin(MessageRpc& rpc)
+   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage5(MessageRpc& rpc)
+   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage11(MessageRpc& rpc)
+   at System.ServiceModel.Dispatcher.MessageRpc.Process(Boolean isOperationContextSet)
+
+Additional Info:
+
+MachineName : NAFS
+TimeStamp : 7/7/2025 10:29:21 AM
+FullName : Telerik.Sitefinity.Utilities, Version=15.3.8522.0, Culture=neutral, PublicKeyToken=b28c218413bdf563
+AppDomainName : /LM/W3SVC/2/ROOT-1-133963565539522197
+ThreadIdentity : 
+WindowsIdentity : Nafs\Nafs
+Requested URL : https://localhost:5001/Sitefinity/Services/ControlTemplates/ControlTemplateService.svc/00000000-0000-0000-0000-000000000000/
+
+
+Category: ErrorLog
+
+Priority: 0
+
+EventId: 90000
+
+Severity: Error
+
+Title:Enterprise Library Exception Handling
+
+Machine: NAFS
+
+App Domain: /LM/W3SVC/2/ROOT-1-133963565539522197
+
+ProcessId: 5048
+
+Process Name: C:\Program Files\IIS Express\iisexpress.exe
+
+Thread Name: 
+
+Win32 ThreadId:17600
+
+Extended Properties: 
+----------------------------------------
+----------------------------------------
+ActivityId: 4fa45c3a-38a8-449f-a299-d376bf8ecc96
+
+Timestamp: 08/07/2025 09:26:02
+
+Message: HandlingInstanceID: a89ea224-1d67-480e-b3f0-5eaefa2b9bff
+An exception of type 'System.Exception' occurred and was caught.
+----------------------------------------------------------------
+07/08/2025 15:26:02
+Type : System.Exception, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+Message : ‹‹‹Database error.›››
+Source : 
+Help link : 
+Data : ‹‹‹System.Collections.ListDictionaryInternal›››
+TargetSite : 
+HResult : ‹‹‹-2146233088›››
+Stack Trace : The stack trace is unavailable.
+Additional Info:
+
+MachineName : NAFS
+TimeStamp : 08/07/2025 09:26:02
+FullName : Telerik.Sitefinity.Utilities, Version=15.3.8522.0, Culture=neutral, PublicKeyToken=b28c218413bdf563
+AppDomainName : /LM/W3SVC/2/ROOT-1-133964308466933124
+ThreadIdentity : siam@lemonhive.com
+WindowsIdentity : Nafs\Nafs
+Requested URL : https://localhost:5001/sf/system/pages(3ad098a5-d57c-4311-9b1a-8ab441b2342d)/Default.SetProperties()?sf_provider=OpenAccessDataProvider&sf_culture=en&sf_site=ee002541-f8a4-40c2-a7c8-bfa24e1a8a16&segment=00000000-0000-0000-0000-000000000000
+
+
+Category: ErrorLog
+
+Priority: 0
+
+EventId: 90000
+
+Severity: Error
+
+Title:Enterprise Library Exception Handling
+
+Machine: NAFS
+
+App Domain: /LM/W3SVC/2/ROOT-1-133964308466933124
+
+ProcessId: 22252
+
+Process Name: C:\Program Files\IIS Express\iisexpress.exe
+
+Thread Name: 
+
+Win32 ThreadId:19312
+
+Extended Properties: 
+----------------------------------------

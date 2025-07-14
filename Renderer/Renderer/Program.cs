@@ -12,7 +12,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSitefinity();
 builder.Services.AddViewComponentModels();
 builder.Services.AddFormViewComponentModels();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

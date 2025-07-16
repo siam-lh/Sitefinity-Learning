@@ -5,6 +5,7 @@ using Progress.Sitefinity.Renderer.Entities.Content;
 using Progress.Sitefinity.RestSdk;
 using Renderer.Entities;
 using Renderer.Models;
+using Renderer.ViewModels;
 
 namespace Renderer.ViewComponents
 {

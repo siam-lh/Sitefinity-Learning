@@ -1,4 +1,4 @@
-﻿namespace Renderer.Models
+﻿namespace Renderer.ViewModels
 {
     public class LogoViewModel
     {

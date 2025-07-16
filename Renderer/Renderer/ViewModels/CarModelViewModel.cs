@@ -1,6 +1,6 @@
 ﻿using Renderer.Entities;
 
-namespace Renderer.Models
+namespace Renderer.ViewModels
 {
     public class CarModelViewModel
     {

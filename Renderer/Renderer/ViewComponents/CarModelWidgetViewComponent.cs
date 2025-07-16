@@ -8,6 +8,7 @@ using Progress.Sitefinity.RestSdk.Dto;
 using Progress.Sitefinity.RestSdk.Filters;
 using Renderer.Entities;
 using Renderer.Models;
+using Renderer.ViewModels;
 
 namespace Renderer.ViewComponents
 {
@@ -51,13 +52,6 @@ namespace Renderer.ViewComponents
                     FieldName = nameof(CarModelItem.Title),
                     Operator = FilterClause.Operators.Equal,
                     FieldValue = "Lamborghini Urus 2025"
-                });
-
-                combinedFilter.ChildFilters.Add(new FilterClause
-                {
-                    FieldName = "CompanyName.Id",
-                    Operator = FilterClause.Operators.Equal,
-                    FieldValue = filterVal
                 });
 
                 var carModels = await restClient.GetItems<CarModelItem>(

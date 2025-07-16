@@ -1,5 +1,5 @@
 ﻿using Progress.Sitefinity.RestSdk.Dto;
-using Renderer.Models;
+using Renderer.ViewModels;
 
 namespace Renderer.Entities
 {

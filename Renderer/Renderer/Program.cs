@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 
 using Progress.Sitefinity.AspNetCore;
 using Progress.Sitefinity.AspNetCore.FormWidgets;
+using Renderer.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSitefinity();
 builder.Services.AddViewComponentModels();
 builder.Services.AddFormViewComponentModels();
+
+builder.Services.AddScoped<IMegaMenuModel, MegaMenuModel>();
+builder.Services.AddScoped<ICustomNavigationModel, CustomNavigationModel>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

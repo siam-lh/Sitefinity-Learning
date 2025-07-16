@@ -10,3 +10,73 @@
 body {
     font-family: 'Poppins', sans-serif;
 }
+
+
+
+
+.custom-mega-navbar a{
+    all: unset;
+    cursor: pointer;
+    display: inline;
+}
+.custom-mega-navbar ul {
+    display: flex;
+    gap: 1rem; 
+}
+
+.custom-mega-navbar li {
+    margin: 0;
+    padding: 0;
+}
+
+.custom-mega-navbar ul.nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.custom-mega-navbar .nav-item {
+    position: relative;
+}
+
+.custom-mega-navbar .nav-link {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.custom-mega-navbar .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background-color: #fff;
+    border-radius: 0.25rem;
+    z-index: 1000;
+}
+
+.custom-mega-navbar .nav-item:hover > .dropdown-menu {
+    display: block;
+}
+
+.custom-mega-navbar .dropdown-item {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+    .custom-mega-navbar .dropdown-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .custom-mega-navbar .dropdown-item.active {
+        background-color: transparent !important;
+        color: inherit !important;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        font-weight: 500;
+    }

@@ -1,0 +1,50 @@
+﻿@using Progress.Sitefinity.AspNetCore.Widgets.Models.Navigation
+@using Renderer.ViewModels
+@model CustomNavigationViewModel
+
+@{
+    var activeTrail = new List<PageViewModel>();
+
+    foreach (var node in Model.Nodes)
+    {
+        if (node.IsCurrentlyOpened)
+        {
+            activeTrail.Add(node);
+            break;
+        }
+
+        if (node.ChildNodes?.Any(child => child.IsCurrentlyOpened) == true)
+        {
+            activeTrail.Add(node);
+            var child = node.ChildNodes.First(c => c.IsCurrentlyOpened);
+            activeTrail.Add(child);
+            break;
+        }
+    }
+}
+
+<!-- BREADCRUMB -->
+@if (activeTrail.Any())
+{
+    <nav aria-label="breadcrumb" class="breadcrumb-nav py-2 container">
+        <ol class="breadcrumb bg-transparent m-0">
+            @for (int i = 0; i < activeTrail.Count; i++)
+            {
+                var item = activeTrail[i];
+                var isLast = (i == activeTrail.Count - 1);
+
+                <li class="breadcrumb-item text-dark @(isLast ? "fw-semibold" : "breadcrumb-link")">
+                    @if (!isLast)
+                    {
+                        <a href="@item.Url">@item.Title</a>
+                    }
+                    else
+                    {
+                        @item.Title
+                    }
+                </li>
+            }
+        </ol>
+    </nav>
+}
+

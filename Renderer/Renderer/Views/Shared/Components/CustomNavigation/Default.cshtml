@@ -2,26 +2,44 @@
 @model CustomNavigationViewModel
 
 <nav class="@Model.WrapperCssClass custom-mega-navbar">
-    <ul class="nav-list">
-        @foreach (var node in Model.Nodes)
-        {
-            <li class="nav-item position-relative">
-                <a class="nav-link px-3 py-2 d-inline-block @(node.IsCurrentlyOpened ? "active" : "")" href="@node.Url">
-                    @node.Title
-                </a>
+    <div class="container">
+        <ul class="nav-list">
+            @foreach (var node in Model.Nodes)
+            {
+                <li class="navigation-item position-relative">
+                    <a class="navigation-link px-3 py-2 d-inline-block @(node.IsCurrentlyOpened ? "active" : "")" href="@node.Url">
+                        @node.Title
+                    </a>
 
-                @if (node.ChildNodes?.Count > 0)
-                {
-                    <ul class="dropdown-menu show-on-hover shadow p-3">
-                        @foreach (var child in node.ChildNodes)
-                        {
-                            <a class="dropdown-item @(child.IsCurrentlyOpened ? "active" : "")" href="@child.Url">
-                                @child.Title
-                            </a>
-                        }
-                    </ul>
-                }
-            </li>
-        }
-    </ul>
+                    @if (node.ChildNodes?.Count > 0)
+                    {
+                        <ul class="navigation-dropdown-menu shadow p-3">
+                            @foreach (var child in node.ChildNodes)
+                            {
+                                <li class="navigation-item position-relative">
+                                    <a class="dropdown-item @(child.IsCurrentlyOpened ? "active" : "")" href="@child.Url">
+                                        @child.Title
+                                    </a>
+
+                                    @if (child.ChildNodes?.Count > 0)
+                                    {
+                                        <ul class="navigation-dropdown-menu sub-menu shadow p-3">
+                                            @foreach (var grandChild in child.ChildNodes)
+                                            {
+                                                <li class="navigation-item">
+                                                    <a class="dropdown-item @(grandChild.IsCurrentlyOpened ? "active" : "")" href="@grandChild.Url">
+                                                        @grandChild.Title
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
 </nav>

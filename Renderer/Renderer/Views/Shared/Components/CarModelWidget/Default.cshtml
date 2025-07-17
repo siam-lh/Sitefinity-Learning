@@ -16,13 +16,13 @@
 
 <div class="container mt-3">
     <div class="text-center mb-3">
-        <h1>Top Models</h1>
+        <h1 class="car-title text-uppercase">Top Models</h1>
     </div>
     <div class="row">
         @foreach (var item in Model)
         {
             <div class="col-12 col-sm-6 col-lg-4 mb-4">
-                <div class="card h-100 shadow-sm">
+                <div class="bg-color card h-100 shadow-sm">
                     <img src="@item.LogoUrl.Url" alt="@item.LogoUrl.AlternativeText" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" />
 
                     <div class="card-body d-flex flex-column text-center">

@@ -58,7 +58,7 @@ namespace Renderer.ViewComponents
                     new GetAllArgs()
                     {
                         Count = true,
-                        Filter = combinedFilter,
+                        //Filter = combinedFilter,
                         Fields = new[] { "Id", "Title", "Model", "Logo", "CompanyName", "Description", "companyidentity" },
                         OrderBy = new[] { new OrderBy() { Name = "Title", Type = OrderType.Ascending } }
                     });

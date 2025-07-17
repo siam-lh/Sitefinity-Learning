@@ -13,20 +13,45 @@
             break;
         }
 
-        if (node.ChildNodes?.Any(child => child.IsCurrentlyOpened) == true)
+        if (node.ChildNodes != null)
         {
-            activeTrail.Add(node);
-            var child = node.ChildNodes.First(c => c.IsCurrentlyOpened);
-            activeTrail.Add(child);
-            break;
+            foreach (var child in node.ChildNodes)
+            {
+                if (child.IsCurrentlyOpened)
+                {
+                    activeTrail.Add(node);
+                    activeTrail.Add(child);
+                    break;
+                }
+
+                if (child.ChildNodes != null)
+                {
+                    foreach (var grandChild in child.ChildNodes)
+                    {
+                        if (grandChild.IsCurrentlyOpened)
+                        {
+                            activeTrail.Add(node);
+                            activeTrail.Add(child);
+                            activeTrail.Add(grandChild);
+                            break;
+                        }
+                    }
+                }
+
+                if (activeTrail.Any())
+                    break;
+            }
         }
+
+        if (activeTrail.Any())
+            break;
     }
 }
 
 <!-- BREADCRUMB -->
 @if (activeTrail.Any())
 {
-    <nav aria-label="breadcrumb" class="breadcrumb-nav py-2 container">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav py-3 container">
         <ol class="breadcrumb bg-transparent m-0">
             @for (int i = 0; i < activeTrail.Count; i++)
             {

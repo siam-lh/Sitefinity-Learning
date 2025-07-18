@@ -1,7 +1,5 @@
-﻿using Progress.Sitefinity.AspNetCore.RestSdk;
-using Progress.Sitefinity.AspNetCore.Widgets.Models.Navigation;
+﻿using Progress.Sitefinity.AspNetCore.Widgets.Models.Navigation;
 using Progress.Sitefinity.RestSdk;
-using Progress.Sitefinity.RestSdk.Clients.Pages.Dto;
 using Renderer.Entities;
 using Renderer.ViewModels;
 
@@ -22,23 +20,6 @@ namespace Renderer.Models
         {
             var baseNav = await navigationModel.InitializeViewModel(entity);
 
-            //if (entity.SelectionMode == PageSelectionMode.SelectedPageChildren && entity.ShowParentPage && entity.SelectedPage != null)
-            //{
-            //    var parentPage = await restClient.GetItem<PageNodeDto>(entity.SelectedPage);
-            //    if (parentPage != null)
-            //    {
-            //        var wrappedParent = new PageViewModel
-            //        {
-            //            Title = parentPage.Title,
-            //            Url = parentPage.ViewUrl,
-            //            Key = parentPage.Id.ToString(),
-            //            LinkTarget = "_self",
-            //            ChildNodes = baseNav.Nodes
-            //        };
-            //        baseNav.Nodes = new List<PageViewModel> { wrappedParent };
-            //    }
-            //}
-
             return new CustomNavigationViewModel
             {
                 Nodes = baseNav.Nodes,
@@ -47,3 +28,21 @@ namespace Renderer.Models
         }
     }
 }
+
+
+//if (entity.SelectionMode == PageSelectionMode.SelectedPageChildren && entity.ShowParentPage && entity.SelectedPage != null)
+//{
+//    var parentPage = await restClient.GetItem<PageNodeDto>(entity.SelectedPage);
+//    if (parentPage != null)
+//    {
+//        var wrappedParent = new PageViewModel
+//        {
+//            Title = parentPage.Title,
+//            Url = parentPage.ViewUrl,
+//            Key = parentPage.Id.ToString(),
+//            LinkTarget = "_self",
+//            ChildNodes = baseNav.Nodes
+//        };
+//        baseNav.Nodes = new List<PageViewModel> { wrappedParent };
+//    }
+//}

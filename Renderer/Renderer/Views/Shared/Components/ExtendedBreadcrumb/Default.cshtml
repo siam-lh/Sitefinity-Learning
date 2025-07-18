@@ -1,0 +1,30 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.Razor
+@using Progress.Sitefinity.AspNetCore.Widgets.Models.Breadcrumb
+@using Progress.Sitefinity.RestSdk.Clients.Pages.Dto
+@using Renderer.ViewModels
+
+@model ExtendedBreadcrumbViewModel
+
+@if (Model.Items != null && Model.Items.Count > 0)
+{
+    <nav class="@Model.WrapperCssClass breadcrumb-nav py-3 container" aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent m-0">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+
+                    if (i == Model.Items.Count - 1)
+                    {
+                    <li class="breadcrumb-item text-dark fw-semibold" aria-current="page">@item.Title</li>
+                    }
+                    else
+                    {
+                    <li class="breadcrumb-item text-dark breadcrumb-link">
+                            <a href="@item.ViewUrl">@item.Title</a>
+                        </li>
+                    }
+                }
+            </ol>
+        </nav>
+}

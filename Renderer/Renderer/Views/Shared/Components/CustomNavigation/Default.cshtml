@@ -1,4 +1,5 @@
-﻿@using Progress.Sitefinity.AspNetCore.Widgets.Models.Navigation
+﻿@using Microsoft.AspNetCore.Mvc.Razor
+@using Progress.Sitefinity.AspNetCore.Widgets.Models.Navigation
 @using Renderer.ViewModels
 @model CustomNavigationViewModel
 @functions {
@@ -23,6 +24,7 @@
         return node.IsCurrentlyOpened || IsDirectParentOfActive(node);
     }
 }
+
 <nav class="@Model.WrapperCssClass custom-mega-navbar">
     <div class="container">
         <ul class="nav-list">
@@ -63,3 +65,67 @@
         </ul>
     </div>
 </nav>
+
+
+
+
+
+
+
+
+
+
+@* @functions {
+    HelperResult RenderNavigation(IEnumerable<PageViewModel> nodes, int level = 0)
+    {
+        return new HelperResult(writer =>
+        {
+            if (nodes == null || !nodes.Any())
+                return Task.CompletedTask; 
+
+            var ulClass = level == 0 ? "nav-list" :
+                          level == 1 ? "navigation-dropdown-menu shadow py-2" :
+                                       "navigation-dropdown-menu sub-menu shadow py-2";
+
+            writer.Write($"<ul class='{ulClass}'>");
+
+            foreach (var node in nodes)
+            {
+                bool isActive = node.IsCurrentlyOpened;
+                bool hasActiveChild = node.ChildNodes?.Any(c =>
+                    c.IsCurrentlyOpened || c.ChildNodes?.Any(gc => gc.IsCurrentlyOpened) == true) == true;
+
+                bool isActiveOrParent = isActive || hasActiveChild;
+
+                string linkClass = level == 0 ? "navigation-link px-3 py-2 d-inline-block" : "dropdown-item";
+                if (isActiveOrParent)
+                    linkClass += " active";
+
+                writer.Write("<li class='navigation-item position-relative'>");
+
+                writer.Write($"<a class='{linkClass}' href='{node.Url}' " +
+                             $"{(node.ChildNodes?.Any() == true ? "aria-haspopup='true' aria-expanded='" + isActiveOrParent.ToString().ToLower() + "'" : "")}" +
+                             $"{(isActive ? " aria-current='page'" : "")}>" +
+                             $"{node.Title}</a>");
+
+                if (node.ChildNodes?.Any() == true)
+                {
+                    writer.Write(RenderNavigation(node.ChildNodes, level + 1));
+                }
+
+                writer.Write("</li>");
+            }
+
+            writer.Write("</ul>");
+
+            return Task.CompletedTask;
+        });
+    }
+} *@
+
+
+@* <nav class="@Model.WrapperCssClass custom-mega-navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+        @RenderNavigation(Model.Nodes)
+    </div>
+</nav> *@

@@ -1,18 +1,19 @@
-﻿body {
+﻿     body {
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     background-color: #fefcf9;
+    overflow-x: hidden;
 }
-.font-poppins {
+    .font-poppins {
     font-family: 'Poppins', sans-serif;
 }
-.footer-link a {
+    .footer-link a {
     all: unset;
     cursor: pointer;
     display: inline;
 }
 
-.bg-color {
+    .bg-color {
     background-color: #fefcf9 !important;
 }
 
@@ -26,6 +27,7 @@
     font-size: 20px;
     font-weight: 500;
     text-transform: uppercase;
+    overflow-x: clip;
 }
 
     .custom-mega-navbar a {
@@ -141,19 +143,20 @@
     }
 
     .custom-mega-navbar .navigation-dropdown-menu.sub-menu {
-        top: 0;
-        left: 100%;
-        margin-left: 10px;
-        border-radius: 0.25rem;
-        min-width: 180px;
-        z-index: 1001;
-        background-color: #fefcf9;
-        display: none;
-        position: absolute;
-        padding-top: 0rem;
-        list-style: none;
-        margin-top: 0;
-    }
+            top: 0;
+            left: 100%;
+            right: auto;
+            margin-left: 10px;
+            border-radius: 0.25rem;
+            min-width: 180px;
+            z-index: 1001;
+            background-color: #fefcf9;
+            display: none;
+            position: absolute;
+            padding-top: 0rem;
+            list-style: none;
+            margin-top: 0;
+        }
 
     /* Add triangle arrow for second-level dropdown (same style as first level) */
     .custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
@@ -197,12 +200,12 @@
 
 /*Car Company command News*/
 
-.car-title {
+    .car-title {
     font-size: 2.5rem;
     font-weight: 700;
 }
 
-.section-title {
+    .section-title {
     font-size: 1.5rem;
     font-weight: 600;
     border-bottom: 2px solid #000;
@@ -210,31 +213,31 @@
     margin-bottom: 1rem;
 }
 
-.car-specs li {
+    .car-specs li {
     margin-bottom: 0.5rem;
 }
 
 /*About use command FAQs*/
 
-.faq-title {
+    .faq-title {
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
 }
 
-.accordion-button:not(.collapsed) {
+    .accordion-button:not(.collapsed) {
     color: #0d6efd;
     font-weight: 600;
 }
 
 
 /*Bredcum navigation*/
-.breadcrumb-nav{
+    .breadcrumb-nav{
     font-size:13px;
     padding-left:18px;
 }
-.breadcrumb-link a {
+    .breadcrumb-link a {
     text-decoration: underline;
     text-underline-offset: 4px;
     text-decoration-color: black;

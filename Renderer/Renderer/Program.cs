@@ -16,6 +16,8 @@ builder.Services.AddFormViewComponentModels();
 
 builder.Services.AddScoped<IMegaMenuModel, MegaMenuModel>();
 builder.Services.AddScoped<ICustomNavigationModel, CustomNavigationModel>();
+builder.Services.AddScoped<IExtendedBreadcumbModel, ExtendedBreadcumbModel>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

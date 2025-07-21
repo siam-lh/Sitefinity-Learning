@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Mvc.Razor
+@using Progress.Sitefinity.AspNetCore.Widgets.Models.Navigation
+@using Renderer.ViewModels
+@model CustomNavigationViewModel
+
+@functions {
+    PageViewModel FindParentOfCurrent(IEnumerable<PageViewModel> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            if (node.ChildNodes != null && node.ChildNodes.Any(child =>
+                child.IsCurrentlyOpened || (child.ChildNodes != null && child.ChildNodes.Any(gc => gc.IsCurrentlyOpened))))
+            {
+                return node;
+            }
+
+            if (node.ChildNodes != null)
+            {
+                var parent = FindParentOfCurrent(node.ChildNodes);
+                if (parent != null)
+                    return parent;
+            }
+        }
+        return null;
+    }
+
+    IEnumerable<PageViewModel> GetSiblingsOfCurrent()
+    {
+        var parent = FindParentOfCurrent(Model.Nodes);
+        if (parent != null && parent.ChildNodes != null)
+            return parent.ChildNodes;
+
+        var current = Model.Nodes.FirstOrDefault(n => n.IsCurrentlyOpened);
+        return current != null ? Model.Nodes : Enumerable.Empty<PageViewModel>();
+    }
+}
+
+<div class="horizontal-tabs-wrapper">
+    <nav class="horizontal-tabs-navbar">
+        <ul class="nav horizontal-tabs">
+            @foreach (var sibling in GetSiblingsOfCurrent())
+            {
+                <li class="nav-item position-relative">
+                    <a class="nav-link @(sibling.IsCurrentlyOpened ? "active-tab" : "")" href="@sibling.Url">
+                        @sibling.Title
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,25 @@
+﻿@using Renderer.Entities
+@model List<FilteredItem>
+
+@foreach (var item in Model)
+{
+    <div class="row align-items-center py-3 border-bottom bg-light">
+        <div class="col-4">
+            <strong>@item.Title</strong>
+        </div>
+        <div class="col-3">
+            <div>@item.PhoneLine1</div>
+            <div>@item.PhoneLine2</div>
+        </div>
+        <div class="col-3">
+            <span class="text-danger fw-bold">★</span> 
+        </div>
+        <div class="col-2">
+            <a href="@item.Website" target="_blank" class="text-danger text-decoration-none">
+                Website
+            </a>
+        </div>
+    </div>
+}
+
+

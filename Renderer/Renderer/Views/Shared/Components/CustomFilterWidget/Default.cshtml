@@ -1,0 +1,48 @@
+﻿@model CustomFilterWidgetModel
+
+<div class="custom-filter-widget d-flex">
+    <!-- Sidebar: Regions -->
+    <div class="region-sidebar bg-danger text-white p-3">
+        <h5>Distributors by Region</h5>
+        <hr/>
+        <ul class="list-unstyled" id="regionList">
+            <li class="py-1 fw-bold region-item active" data-region="UK">UK</li>
+            <li class="py-1 region-item" data-region="Europe">Europe</li>
+            <li class="py-1 region-item" data-region="Australasia">Australasia</li>
+            <li class="py-1 region-item" data-region="Middle East">Middle East</li>
+        </ul>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-area flex-grow-1 p-3">
+        <!-- Filter Dropdown -->
+        <div class="mb-3 d-flex align-items-center">
+            <label class="me-2 fw-bold">Filter</label>
+            <select id="filterSelect" class="form-select w-auto">
+                <option value="">All</option>
+                @foreach (var option in Model.FilterOptions)
+                {
+                    <option value="@option">@option</option>
+                }
+            </select>
+        </div>
+
+        <!-- Table Header -->
+        <div class="row fw-bold border-bottom py-2">
+            <div class="col-4">Company</div>
+            <div class="col-3">Phone</div>
+            <div class="col-3">Send My List</div>
+            <div class="col-2">Web</div>
+        </div>
+
+        <!-- Dynamic Content -->
+        <div id="filteredContent">
+            @* @await Html.PartialAsync("_FilteredList", Model.Items) *@
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/custom-filter-widget.js"></script>
+

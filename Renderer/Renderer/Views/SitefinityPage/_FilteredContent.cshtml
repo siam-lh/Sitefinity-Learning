@@ -1,0 +1,24 @@
+﻿@using Renderer.Entities
+@model IEnumerable<CompanyEntity>
+
+@if (!Model.Any())
+{
+    <p>No results found.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5>@item.CompanyName</h5>
+                        <p>Region: @item.Region</p>
+                        <p>Subregion: @item.SubRegion</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

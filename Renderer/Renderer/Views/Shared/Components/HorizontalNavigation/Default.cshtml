@@ -2,7 +2,6 @@
 @using Progress.Sitefinity.AspNetCore.Widgets.Models.Navigation
 @using Renderer.ViewModels
 @model CustomNavigationViewModel
-
 @functions {
     PageViewModel FindParentOfCurrent(IEnumerable<PageViewModel> nodes)
     {
@@ -13,7 +12,6 @@
             {
                 return node;
             }
-
             if (node.ChildNodes != null)
             {
                 var parent = FindParentOfCurrent(node.ChildNodes);
@@ -23,29 +21,49 @@
         }
         return null;
     }
-
     IEnumerable<PageViewModel> GetSiblingsOfCurrent()
     {
         var parent = FindParentOfCurrent(Model.Nodes);
         if (parent != null && parent.ChildNodes != null)
             return parent.ChildNodes;
-
         var current = Model.Nodes.FirstOrDefault(n => n.IsCurrentlyOpened);
         return current != null ? Model.Nodes : Enumerable.Empty<PageViewModel>();
     }
 }
 
+@{
+    var siblings = GetSiblingsOfCurrent().ToList();
+    var currentIndex = siblings.FindIndex(s => s.IsCurrentlyOpened);
+    // Circular navigation - loop to end/beginning
+    var prevTab = currentIndex > 0 ? siblings[currentIndex - 1] : siblings.LastOrDefault();
+    var nextTab = currentIndex < siblings.Count - 1 ? siblings[currentIndex + 1] : siblings.FirstOrDefault();
+}
+
 <div class="horizontal-tabs-wrapper">
     <nav class="horizontal-tabs-navbar">
+        <!-- Navigation Arrows -->
+        @if (prevTab != null)
+        {
+            <a href="@prevTab.Url" class="nav-arrow prev" title="@prevTab.Title">
+                <svg width="1em" height="1em" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="Vector" d="M7.30759 14.0718L7.30765 14.0718L14.9112 21.6753C15.5355 22.2996 16.5477 22.2997 17.1719 21.6753L7.30759 14.0718ZM7.30759 14.0718C6.9959 13.7599 6.83963 13.3503 6.83963 12.9417C6.83963 12.5334 6.99551 12.1237 7.30731 11.8117L7.30742 11.8116L14.9109 4.20831C15.5352 3.58371 16.5475 3.5836 17.1717 4.20824C17.7959 4.83239 17.7958 5.8444 17.1718 6.4687L17.1717 6.46876L10.6987 12.9417L17.1719 19.4146L17.172 19.4147C17.796 20.039 17.7961 21.051 17.172 21.6752L7.30759 14.0718Z" fill="currentColor" stroke="currentColor" stroke-width="0.72043" stroke-linecap="round"></path></svg>
+            </a>
+        }
         <ul class="nav horizontal-tabs">
-            @foreach (var sibling in GetSiblingsOfCurrent())
+            @foreach (var sibling in siblings)
             {
-                <li class="nav-item position-relative">
+                <li class="nav-item position-relative @(sibling.IsCurrentlyOpened ? "active-item" : "")">
                     <a class="nav-link @(sibling.IsCurrentlyOpened ? "active-tab" : "")" href="@sibling.Url">
                         @sibling.Title
                     </a>
                 </li>
             }
         </ul>
+
+        @if (nextTab != null)
+        {
+            <a href="@nextTab.Url" class="nav-arrow next" title="@nextTab.Title">
+                 <svg width="1em" height="1em" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.1721 11.8116L17.172 11.8115L9.56851 4.20808C8.94421 3.58378 7.93193 3.58369 7.30773 4.20808L17.1721 11.8116ZM17.1721 11.8116C17.4838 12.1234 17.64 12.5331 17.64 12.9417C17.64 13.35 17.4842 13.7596 17.1724 14.0717L17.1723 14.0718L9.56881 21.6751C8.94451 22.2997 7.93219 22.2998 7.30797 21.6751C6.68377 21.051 6.68386 20.039 7.30791 19.4147L7.30797 19.4146L13.781 12.9417L7.30774 6.46876L7.30767 6.46869C6.68365 5.84436 6.68354 4.83233 7.30768 4.20814L17.1721 11.8116Z" fill="currentColor" stroke="currentColor" stroke-width="0.72043" stroke-linecap="round"></path></svg>
+            </a>
+        }
     </nav>
 </div>

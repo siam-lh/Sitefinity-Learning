@@ -1,0 +1,16 @@
+﻿@using Renderer.ViewModels
+@model WhereToBuyViewModel
+
+<table class="skeleton-table" >
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr class="skeleton-row shimmer mb-1">
+                <td>
+                    <div class="skeleton-block"></div>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

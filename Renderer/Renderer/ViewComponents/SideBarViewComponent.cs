@@ -9,6 +9,7 @@ namespace Renderer.ViewComponents
     public class SideBarViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke()
+        
         {
             string region = HttpContext.Request.Query["region"];
             string subregion = HttpContext.Request.Query["subregion"];
@@ -36,6 +37,14 @@ namespace Renderer.ViewComponents
                     .Where(i => string.IsNullOrEmpty(region) || i.Region == region)
                     .Select(i => i.SubRegion).Distinct().ToList()
             };
+            var isAjax = HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest" &&
+             HttpContext.Request.Headers["Accept"].ToString().Contains("text/html");
+
+            if (isAjax)
+            {
+                return View("_DynamicTableContent", model);
+            }
+
             return View("Default", model);
         }
     }

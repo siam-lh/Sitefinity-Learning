@@ -28,7 +28,7 @@ namespace Renderer.SD
                     {
                         companies.Add(new CompanyEntity
                         {
-                            CompanyName = $"{region.Key} {subRegion} {companyId}",
+                            CompanyName = $"{subRegion} {companyId}",
                             Region = region.Key,
                             SubRegion = subRegion,
                             PhoneNumber = $"+91000000{companyId:D4}",

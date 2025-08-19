@@ -434,7 +434,7 @@ custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
 
 .right-column {
     flex: 1;
-    padding: 1rem 2.5rem 0rem 1.5rem;
+    padding: 1rem 2.5rem 0rem 2rem;
     overflow-y: auto;
 }
 
@@ -498,11 +498,10 @@ custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
 .table-body-scroll {
     height: 500px;
     overflow-y: auto;
-/*    border: 0 solid #e5e7eb;*/
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-    /* Striped body rows */
+/* Striped body rows */
 .table-body-scroll tr:nth-child(even) {
         background-color: #EDEDED;
     }
@@ -529,13 +528,13 @@ custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
 
     .left-column p {
             padding: 0.75rem;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             line-height: 1;
         }
 
     .left-column ul {
             padding: 0.75rem;
-            font-size: 1.25rem;
+            font-size: 1rem;
             gap: 0.75rem;
         }
 
@@ -552,13 +551,17 @@ custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
 
     .responsive-table td {
         padding: 16px 20px;
+        font-size:1.25rem;
+        line-height:1.2;
 /*        text-align: left;*/
        font-weight: 700;
     }
     .responsive-table th {
-        padding: 8px 20px;
-/*        text-align: left;*/
-       font-weight: 700;
+            padding: 8px 20px;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            /*        text-align: left;*/
+            font-weight: 700;
         }
     .right-column {
         padding: 1rem 1.75rem 0rem 1.5rem;
@@ -797,7 +800,9 @@ custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
 
     .merged-cell > div {
             line-height: 1.4;
-        }
+            margin-right: 0px;
+            padding-right: 0px;
+    }
 }
 
 /* Sidebar widget stylings Ends*/

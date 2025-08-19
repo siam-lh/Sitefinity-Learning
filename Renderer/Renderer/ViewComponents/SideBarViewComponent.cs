@@ -9,8 +9,8 @@ namespace Renderer.ViewComponents
     public class SideBarViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke()
-        
         {
+          
             string region = HttpContext.Request.Query["region"];
             string subregion = HttpContext.Request.Query["subregion"];
             var allItems = MockContentService.GetItems();

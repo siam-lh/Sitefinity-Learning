@@ -71,7 +71,7 @@
                 </div>
             </div>
             <!-- Content Area -->
-           
+            @* <partial name="~/Views/Shared/Components/SideBar/_DynamicTableContent.cshtml" model="Model" /> *@
             <div id="dynamicContent">
                 <table class="responsive-table">
                     <thead>
@@ -85,8 +85,7 @@
                 </table>
                 <div class="table-body-scroll">
                     <div id="dynamicList">
-                        <partial name="_DynamicTableContent" model="Model" /> 
-                         @* @await Html.PartialAsync("~/Views/Shared/Components/SideBar/_DynamicTableContent.cshtml", Model) *@
+                        <partial name="~/Views/Shared/Components/SideBar/_DynamicTableContent.cshtml" model="Model" />
                     </div>
                     <div id="skeletonLoader">
                         <partial name="_SkeletonTableContentLoader" model="Model" />

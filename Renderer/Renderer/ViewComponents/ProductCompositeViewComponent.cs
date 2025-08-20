@@ -7,6 +7,7 @@ using Renderer.Entities;
 using Renderer.ViewModels;
 using System.Globalization;
 using System.Text;
+using System.Linq;
 
 namespace Renderer.ViewComponents
 {
@@ -36,22 +37,63 @@ namespace Renderer.ViewComponents
             viewModel.InstructionalText = entity.InstructionalText;
             viewModel.FieldName = entity.SfFieldName;
 
-            // Map ProductInfo properties
-            viewModel.ProductInfo.ProductTitleFieldName = entity.SfFieldName + "_ProductTitle";
-            viewModel.ProductInfo.ProductDescriptionFieldName = entity.SfFieldName + "_ProductDescription";
-            viewModel.ProductInfo.ProductTitleLabel = entity.ProductInformation.ProductTitleLabel;
-            viewModel.ProductInfo.ProductDescriptionLabel = entity.ProductInformation.ProductDescriptionLabel;
-            viewModel.ProductInfo.ProductTitleValidationAttributes = this.BuildValidationAttributes(entity.ProductInformation.ProductTitleRequired);
-            viewModel.ProductInfo.ProductDescriptionValidationAttributes = this.BuildValidationAttributes(entity.ProductInformation.ProductDescriptionRequired);
+            // Map ProductInfo list to ProductInfoViewModel list
+            if (entity.ProductInformationList != null && entity.ProductInformationList.Any())
+            {
+                for (int i = 0; i < entity.ProductInformationList.Count; i++)
+                {
+                    var productInfo = entity.ProductInformationList[i];
+                    var productInfoViewModel = new ProductInfoViewModel
+                    {
+                        ProductTitleFieldName = $"{entity.SfFieldName}_ProductTitle_{i}",
+                        ProductDescriptionFieldName = $"{entity.SfFieldName}_ProductDescription_{i}",
+                        ProductTitleLabel = productInfo.ProductTitleLabel,
+                        ProductDescriptionLabel = productInfo.ProductDescriptionLabel,
+                        ProductTitleValidationAttributes = this.BuildValidationAttributes(productInfo.ProductTitleRequired),
+                        ProductDescriptionValidationAttributes = this.BuildValidationAttributes(productInfo.ProductDescriptionRequired)
+                    };
+                    viewModel.ProductInfoList.Add(productInfoViewModel);
+                }
+            }
+            else
+            {
+                // If no items in list, add at least one default item
+                var defaultProductInfo = new ProductInfoViewModel
+                {
+                    ProductTitleFieldName = $"{entity.SfFieldName}_ProductTitle_0",
+                    ProductDescriptionFieldName = $"{entity.SfFieldName}_ProductDescription_0",
+                    ProductTitleLabel = "Product Title",
+                    ProductDescriptionLabel = "Product Description",
+                    ProductTitleValidationAttributes = "",
+                    ProductDescriptionValidationAttributes = ""
+                };
+                viewModel.ProductInfoList.Add(defaultProductInfo);
+            }
 
             viewModel.ValidationAttributes = this.BuildValidationAttributes(entity.Required);
 
-            viewModel.ViolationRestrictionsMessages = JObject.FromObject(new
+            // Build validation messages for all product info items
+            var validationMessages = new JObject();
+            validationMessages["required"] = BuildValidationMessage(entity.Label, entity.RequiredErrorMessage ?? RequiredDefaultValidationMessage, RequiredDefaultValidationMessage);
+
+            for (int i = 0; i < viewModel.ProductInfoList.Count; i++)
             {
-                required = BuildValidationMessage(entity.Label, entity.RequiredErrorMessage ?? RequiredDefaultValidationMessage, RequiredDefaultValidationMessage),
-                productTitleRequired = BuildValidationMessage(entity.ProductInformation.ProductTitleLabel, entity.ProductInformation.ProductTitleRequiredErrorMessage, RequiredDefaultValidationMessage),
-                productDescriptionRequired = BuildValidationMessage(entity.ProductInformation.ProductDescriptionLabel, entity.ProductInformation.ProductDescriptionRequiredErrorMessage, RequiredDefaultValidationMessage),
-            }).ToString();
+                var productInfo = entity.ProductInformationList?.ElementAtOrDefault(i);
+                if (productInfo != null)
+                {
+                    validationMessages[$"productTitleRequired_{i}"] = BuildValidationMessage(
+                        productInfo.ProductTitleLabel,
+                        productInfo.ProductTitleRequiredErrorMessage,
+                        RequiredDefaultValidationMessage);
+
+                    validationMessages[$"productDescriptionRequired_{i}"] = BuildValidationMessage(
+                        productInfo.ProductDescriptionLabel,
+                        productInfo.ProductDescriptionRequiredErrorMessage,
+                        RequiredDefaultValidationMessage);
+                }
+            }
+
+            viewModel.ViolationRestrictionsMessages = validationMessages.ToString();
 
             return this.View(viewModel);
         }

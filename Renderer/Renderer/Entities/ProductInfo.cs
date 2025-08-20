@@ -7,20 +7,20 @@ namespace Renderer.Entities
 {
     public class ProductInfo
     {
-        [DisplayName("Product title label")]
-        [DefaultValue("Product Title")]
+        [DisplayName("Spellman Serial Number")]
+        //[DefaultValue("Product Title")]
         public string ProductTitleLabel { get; set; }
 
-        [DisplayName("Product description label")]
-        [DefaultValue("Product Description")]
+        [DisplayName("Failure/Problem/Error")]
+        //[DefaultValue("Product Description")]
         public string ProductDescriptionLabel { get; set; }
 
-        [DisplayName("Product title required")]
+        [DisplayName("Spellman Serial Number required")]
         [DataType(customDataType: KnownFieldTypes.CheckBox)]
         [Group("Options")]
         public bool ProductTitleRequired { get; set; }
 
-        [DisplayName("Product description required")]
+        [DisplayName("Failure/Problem/Error required")]
         [DataType(customDataType: KnownFieldTypes.CheckBox)]
         [Group("Options")]
         public bool ProductDescriptionRequired { get; set; }

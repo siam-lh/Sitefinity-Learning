@@ -6,6 +6,7 @@ using Progress.Sitefinity.AspNetCore.ViewComponents.AttributeConfigurator.Attrib
 using Progress.Sitefinity.Renderer.Contracts.Forms;
 using Progress.Sitefinity.Renderer.Designers;
 using Progress.Sitefinity.Renderer.Designers.Attributes;
+using System.Collections.Generic;
 
 namespace Renderer.Entities
 {
@@ -21,10 +22,11 @@ namespace Renderer.Entities
         [DisplayName("Instructional text")]
         public string InstructionalText { get; set; }
 
-        // Import ProductInfo as a complex type
+        // Changed to List of ProductInfo
         [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 3)]
-        [DisplayName("Product Information")]
-        public ProductInfo ProductInformation { get; set; } = new ProductInfo();
+        [DisplayName("Product Information List")]
+
+        public List<ProductInfo> ProductInformationList { get; set; } = new List<ProductInfo>();
 
         [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 7)]
         [DisplayName("Required field")]
@@ -66,3 +68,4 @@ namespace Renderer.Entities
         public string SfFieldName { get; set; }
     }
 }
+

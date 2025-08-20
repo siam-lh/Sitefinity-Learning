@@ -1,15 +1,12 @@
-﻿@* @using Microsoft.AspNetCore
+﻿@using Microsoft.AspNetCore
 @using Progress.Sitefinity.AspNetCore.TagHelpers;
 @using Progress.Sitefinity.AspNetCore.Mvc.Rendering;
 @model Renderer.ViewModels.ProductCompositeViewModel
+
 @{
     var compositeFieldUniqueId = Model.FieldName;
-    var productTitleUniqueId = Model.ProductInfo.ProductTitleFieldName;
-    var productDescriptionUniqueId = Model.ProductInfo.ProductDescriptionFieldName;
     var ariaDescribedByAttribute = string.Empty;
     var compositeFieldErrorMessageId = Html.GetUniqueId("CompositeErrorMessage");
-    var productTitleErrorMessageId = Html.GetUniqueId("ProductTitleErrorMessage");
-    var productDescriptionErrorMessageId = Html.GetUniqueId("ProductDescriptionErrorMessage");
 
     @if (Model.HasDescription)
     {
@@ -20,92 +17,82 @@
         ariaDescribedByAttribute = $"aria-describedby='{compositeFieldErrorMessageId}'";
     }
 }
-
 <script data-sf-role='start_field_@compositeFieldUniqueId' data-sf-role-field-name='@compositeFieldUniqueId'></script>
-<div class="mb-3 @Model.CssClass" data-sf-role="composite-field-container">
-    <input data-sf-role="violation-messages" type="hidden" value='@Model.ViolationRestrictionsMessages' />
-    <fieldset>
-        <legend class="h6">@Model.Label</legend>
-        @if (Model.HasDescription)
-        {
-            <div id='@Html.GetUniqueId("CompositeInfo")' class="form-text mb-3">@Model.InstructionalText</div>
-        }
-        <!-- Hidden field to track composite field value for Sitefinity -->
-        <input type="hidden"
-               id='@compositeFieldUniqueId'
-               name="@Model.FieldName"
-               data-sf-role="text-field-input" />
-
-        <!-- Product Title Field -->
-        <div class="mb-3">
-            <label class="form-label" for='@productTitleUniqueId'>@Model.ProductInfo.ProductTitleLabel</label>
-            <input id='@productTitleUniqueId'
-                   type="text"
-                   class="form-control"
-                   name="@Model.ProductInfo.ProductTitleFieldName"
-                   data-sf-role="product-title-input"
-                   @(Model.Readonly ? "readonly" : "")
-                   aria-describedby='@productTitleErrorMessageId'
-                   @Html.Raw(Model.ProductInfo.ProductTitleValidationAttributes) />
-            <div id='@productTitleErrorMessageId' data-sf-role="error-message" role="alert" aria-live="assertive" class="invalid-feedback"></div>
-        </div>
-
-        <!-- Product Description Field -->
-        <div class="mb-3">
-            <label class="form-label" for='@productDescriptionUniqueId'>@Model.ProductInfo.ProductDescriptionLabel</label>
-            <textarea id='@productDescriptionUniqueId'
-                      class="form-control"
-                      name="@Model.ProductInfo.ProductDescriptionFieldName"
-                      rows="4"
-                      data-sf-role="product-description-input"
-                      @(Model.Readonly ? "readonly" : "")
-                      aria-describedby='@productDescriptionErrorMessageId'
-                      @Html.Raw(Model.ProductInfo.ProductDescriptionValidationAttributes)></textarea>
-            <div id='@productDescriptionErrorMessageId' data-sf-role="error-message" role="alert" aria-live="assertive" class="invalid-feedback"></div>
-        </div>
-    </fieldset>
-    <div id='@compositeFieldErrorMessageId' data-sf-role="error-message" role="alert" aria-live="assertive" class="invalid-feedback"></div>
-</div>
-<script data-sf-role='end_field_@compositeFieldUniqueId'></script>
-
-<!-- Include External JS -->
-<script src="~/js/form-widgets/product-composite-widget.js"></script>
- *@
-
-
-
-@using Microsoft.AspNetCore
-@using Progress.Sitefinity.AspNetCore.TagHelpers;
-@using Progress.Sitefinity.AspNetCore.Mvc.Rendering;
-@model Renderer.ViewModels.ProductCompositeViewModel
-@{
-    var compositeFieldUniqueId = Model.FieldName;
-    var productTitleUniqueId = Model.ProductInfo.ProductTitleFieldName;
-    var productDescriptionUniqueId = Model.ProductInfo.ProductDescriptionFieldName;
-    var ariaDescribedByAttribute = string.Empty;
-    var compositeFieldErrorMessageId = Html.GetUniqueId("CompositeErrorMessage");
-    var productTitleErrorMessageId = Html.GetUniqueId("ProductTitleErrorMessage");
-    var productDescriptionErrorMessageId = Html.GetUniqueId("ProductDescriptionErrorMessage");
-
-    @if (Model.HasDescription)
-    {
-        ariaDescribedByAttribute = $"aria-describedby='{compositeFieldUniqueId} {compositeFieldErrorMessageId}'";
-    }
-    else
-    {
-        ariaDescribedByAttribute = $"aria-describedby='{compositeFieldErrorMessageId}'";
-    }
-}
-
 <div class="mb-3 @Model.CssClass"
      data-sf-role="composite-field-container"
      data-composite-id="@compositeFieldUniqueId"
-     data-title-id="@productTitleUniqueId"
-     data-description-id="@productDescriptionUniqueId">
+     data-product-count="@Model.ProductInfoList.Count">
 
-    <input type="hidden" id="@compositeFieldUniqueId" name="@Model.FieldName" />
-    <input id="@productTitleUniqueId" type="text" />
-    <textarea id="@productDescriptionUniqueId"></textarea>
+    <!-- Hidden field to store the composite JSON value -->
+    <input type="hidden" id="@compositeFieldUniqueId" name="@Model.FieldName" data-sf-role="text-field-input"
+           @(Model.Readonly ? "readonly" : "")
+           @Html.Raw(ariaDescribedByAttribute)
+           @Html.Raw(Model.ValidationAttributes) />
+
+    <!-- Label and instructional text -->
+    @if (!string.IsNullOrEmpty(Model.Label))
+    {
+        <label class="form-label">@Model.Label</label>
+    }
+
+    @if (Model.HasDescription)
+    {
+        <div class="form-text mb-2">@Model.InstructionalText</div>
+    }
+
+    <!-- Dynamic product info fields container -->
+    <div id="product-info-container">
+        @for (int i = 0; i < Model.ProductInfoList.Count; i++)
+        {
+            var productInfo = Model.ProductInfoList[i];
+            var productTitleUniqueId = productInfo.ProductTitleFieldName;
+            var productDescriptionUniqueId = productInfo.ProductDescriptionFieldName;
+            var productTitleErrorMessageId = Html.GetUniqueId("ProductTitleErrorMessage");
+            var productDescriptionErrorMessageId = Html.GetUniqueId("ProductDescriptionErrorMessage");
+
+            <div class="product-info-item border p-3 mb-3" data-product-index="@i">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Product @(i + 1)</h6>
+                    @if (Model.ProductInfoList.Count > 1)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-product" data-index="@i">Remove</button>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label for="@productTitleUniqueId" class="form-label">@productInfo.ProductTitleLabel</label>
+                    <input id="@productTitleUniqueId"
+                           type="text"
+                           class="form-control product-title-field"
+                           data-index="@i"
+                           @Html.Raw(productInfo.ProductTitleValidationAttributes)
+                           aria-describedby="@productTitleErrorMessageId" />
+                    <div id="@productTitleErrorMessageId" class="invalid-feedback"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="@productDescriptionUniqueId" class="form-label">@productInfo.ProductDescriptionLabel</label>
+                    <textarea id="@productDescriptionUniqueId"
+                          class="form-control product-description-field"
+                          data-index="@i"
+                          rows="3"
+                          @Html.Raw(productInfo.ProductDescriptionValidationAttributes)
+                          aria-describedby="@productDescriptionErrorMessageId"></textarea>
+                    <div id="@productDescriptionErrorMessageId" class="invalid-feedback"></div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <!-- Add new product button -->
+    <button type="button" id="add-product-btn" class="btn btn-outline-primary">
+        <i class="fas fa-plus"></i> Add Another Product
+    </button>
+
+    <!-- Error message container -->
+    <div id="@compositeFieldErrorMessageId" class="invalid-feedback"></div>
 </div>
 
 <script src="~/js/form-widgets/product-composite-widget.js"></script>
+<script data-sf-role='end_field_@compositeFieldUniqueId'></script>

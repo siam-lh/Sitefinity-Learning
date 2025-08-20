@@ -1,4 +1,6 @@
-﻿namespace Renderer.ViewModels
+﻿using System.Collections.Generic;
+
+namespace Renderer.ViewModels
 {
     public class ProductCompositeViewModel
     {
@@ -10,8 +12,7 @@
         public string ValidationAttributes { get; set; }
         public bool Readonly { get; set; }
 
-        // Use the ProductInfoViewModel as a complex type
-        public ProductInfoViewModel ProductInfo { get; set; } = new ProductInfoViewModel();
+        public List<ProductInfoViewModel> ProductInfoList { get; set; } = new List<ProductInfoViewModel>();
 
         public bool HasDescription
         {
@@ -22,3 +23,4 @@
         }
     }
 }
+

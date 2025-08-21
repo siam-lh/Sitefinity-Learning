@@ -11,16 +11,8 @@ namespace Renderer.ViewModels
         public string ViolationRestrictionsMessages { get; set; }
         public string ValidationAttributes { get; set; }
         public bool Readonly { get; set; }
-
         public List<ProductInfoViewModel> ProductInfoList { get; set; } = new List<ProductInfoViewModel>();
 
-        public bool HasDescription
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(this.InstructionalText);
-            }
-        }
+        public bool HasDescription => !string.IsNullOrEmpty(InstructionalText);
     }
 }
-

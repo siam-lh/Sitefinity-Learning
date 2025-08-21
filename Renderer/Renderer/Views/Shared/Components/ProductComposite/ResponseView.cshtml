@@ -1,0 +1,32 @@
+﻿@using Newtonsoft.Json.Linq
+@model string
+
+@{
+    var items = new List<JObject>();
+    if (!string.IsNullOrEmpty(Model))
+    {
+        try
+        {
+            items = JArray.Parse(Model).Select(x => (JObject)x).ToList();
+        }
+        catch
+        {
+            // fallback
+        }
+    }
+}
+
+@if (items.Any())
+{
+    foreach (var item in items)
+    {
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px;">
+            <div><strong>Title:</strong> @item["ProductTitle"]</div>
+            <div><strong>Description:</strong> @item["ProductDescription"]</div>
+        </div>
+    }
+}
+else
+{
+    <span>@Model</span>
+}

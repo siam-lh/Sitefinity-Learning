@@ -6,7 +6,6 @@ using Progress.Sitefinity.AspNetCore.ViewComponents.AttributeConfigurator.Attrib
 using Progress.Sitefinity.Renderer.Contracts.Forms;
 using Progress.Sitefinity.Renderer.Designers;
 using Progress.Sitefinity.Renderer.Designers.Attributes;
-using System.Collections.Generic;
 
 namespace Renderer.Entities
 {
@@ -22,13 +21,7 @@ namespace Renderer.Entities
         [DisplayName("Instructional text")]
         public string InstructionalText { get; set; }
 
-        // Changed to List of ProductInfo
         [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 3)]
-        [DisplayName("Product Information List")]
-
-        public List<ProductInfo> ProductInformationList { get; set; } = new List<ProductInfo>();
-
-        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 7)]
         [DisplayName("Required field")]
         [DataType(customDataType: KnownFieldTypes.CheckBox)]
         [Group("Options")]
@@ -40,8 +33,20 @@ namespace Renderer.Entities
         [Group("Options")]
         public bool Hidden { get; set; }
 
+        [DisplayName("Require Spellman Serial Number")]
+        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 5)]
+        [DataType(customDataType: KnownFieldTypes.CheckBox)]
+        [Group("Options")]
+        public bool ProductTitleRequired { get; set; } = true;
+
+        [DisplayName("Require Failure/Problem/Error")]
+        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 6)]
+        [DataType(customDataType: KnownFieldTypes.CheckBox)]
+        [Group("Options")]
+        public bool ProductDescriptionRequired { get; set; } = true;
+
         [DisplayName("Error message if the field is empty")]
-        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 9)]
+        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 7)]
         [DefaultValue("{0} field is required")]
         [ConditionalVisibility("{\"conditions\":[{\"fieldName\":\"Required\",\"operator\":\"Equals\",\"value\":true}]}")]
         public string RequiredErrorMessage { get; set; }
@@ -68,4 +73,3 @@ namespace Renderer.Entities
         public string SfFieldName { get; set; }
     }
 }
-

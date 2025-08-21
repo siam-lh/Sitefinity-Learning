@@ -1,0 +1,68 @@
+﻿@using Progress.Sitefinity.AspNetCore.Mvc.Rendering;
+@model Renderer.ViewModels.ProductInfoViewModel
+
+@{
+    var productTitleErrorMessageId = Html.GetUniqueId("ProductTitleErrorMessage");
+    var productDescriptionErrorMessageId = Html.GetUniqueId("ProductDescriptionErrorMessage");
+    var isTemplate = Model.Index == -1;
+    var displayIndex = isTemplate ? 1 : Model.Index + 1;
+    var isRequired = !string.IsNullOrEmpty(Model.ProductTitleValidationAttributes);
+}
+
+<div class="product-info-item border rounded p-3 mb-3" data-product-index="@Model.Index">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="mb-0 product-number text-primary">
+            <i class="fas fa-box me-2"></i>Product @displayIndex
+        </h6>
+        <button type="button"
+                class="btn btn-sm btn-outline-danger remove-product"
+                data-index="@Model.Index"
+                title="Remove this product"
+                style="@(isTemplate ? "display: none;" : "")xx">
+            <i class="fas fa-trash-alt me-1"></i>Remove
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-6 mb-3">
+            <label for="@Model.ProductTitleFieldName" class="form-label">
+                @Model.ProductTitleLabel
+                @if (!string.IsNullOrEmpty(Model.ProductTitleValidationAttributes))
+                {
+                    <span class="text-danger">*</span>
+                }
+            </label>
+            <input id="@Model.ProductTitleFieldName"
+                   name="@Model.ProductTitleFieldName"
+                   type="text"
+                   class="form-control product-title-field"
+                   placeholder="Enter serial number"
+                   data-index="@Model.Index"
+                   data-field-type="title"
+                   value="@Model.ProductTitleValue"
+                   @Html.Raw(Model.ProductTitleValidationAttributes)
+                   aria-describedby="@productTitleErrorMessageId" />
+            <div id="@productTitleErrorMessageId" class="invalid-feedback"></div>
+        </div>
+
+        <div class="col-12 col-md-6 mb-3">
+            <label for="@Model.ProductDescriptionFieldName" class="form-label">
+                @Model.ProductDescriptionLabel
+                @if (!string.IsNullOrEmpty(Model.ProductDescriptionValidationAttributes))
+                {
+                    <span class="text-danger">*</span>
+                }
+            </label>
+            <textarea id="@Model.ProductDescriptionFieldName"
+                      name="@Model.ProductDescriptionFieldName"
+                      class="form-control product-description-field"
+                      placeholder="Describe the failure, problem, or error"
+                      data-index="@Model.Index"
+                      data-field-type="description"
+                      rows="3"
+                      @Html.Raw(Model.ProductDescriptionValidationAttributes)
+                      aria-describedby="@productDescriptionErrorMessageId">@Model.ProductDescriptionValue</textarea>
+            <div id="@productDescriptionErrorMessageId" class="invalid-feedback"></div>
+        </div>
+    </div>
+</div>

@@ -1,172 +1,343 @@
-﻿
-document.addEventListener('DOMContentLoaded', function () {
-    var container = document.querySelector('[data-sf-role="composite-field-container"]');
-    if (!container) return;
+﻿class ProductCompositeWidget {
+    constructor(container) {
+        this.container = container;
+        this.compositeField = document.getElementById(container.dataset.compositeId);
+        this.productInfoContainer = container.querySelector('#product-info-container');
+        this.addProductBtn = container.querySelector('#add-product-btn');
+        this.template = container.querySelector('#product-item-template');
+        this.fieldName = container.dataset.fieldName;
 
-    var compositeField = document.getElementById(container.dataset.compositeId);
-    var productInfoContainer = document.getElementById('product-info-container');
-    var addProductBtn = document.getElementById('add-product-btn');
+        // Load validation messages
+        this.validationMessages = this.loadValidationMessages();
 
-    if (!compositeField || !productInfoContainer) return;
+        this.productCount = this.getProductItems().length;
+        console.log("Container ", this.container )
+        this.init();
+    }
 
-    var productCount = parseInt(container.dataset.productCount) || 1;
-    function updateCompositeValue() {
-        var products = [];
-        var productItems = productInfoContainer.querySelectorAll('.product-info-item');
+    init() {
+        if (!this.compositeField || !this.productInfoContainer) return;
 
-        productItems.forEach(function (item, index) {
-            var titleField = item.querySelector('.product-title-field');
-            var descriptionField = item.querySelector('.product-description-field');
+        this.attachEventListeners();
+        this.updateProductNumbers();
+        this.updateCompositeValue();
+    }
 
-            if (titleField && descriptionField && (titleField.value || descriptionField.value)) {
-                products.push({
-                    id: index + 1,
-                    title: titleField.value,
-                    description: descriptionField.value,
-                    created: new Date().toISOString(),
-                    isValid: !!(titleField.value && descriptionField.value)
-                });
+    loadValidationMessages() {
+        try {
+            const validationScript = document.getElementById(`${this.fieldName}_ValidationMessages`);
+            return validationScript ? JSON.parse(validationScript.textContent) : {};
+        } catch (e) {
+            console.warn('Could not load validation messages:', e);
+            return {};
+        }
+    }
+
+    attachEventListeners() {
+        // Add product button
+        this.addProductBtn?.addEventListener('click', () => this.addProduct());
+
+        // Event delegation for remove buttons and field changes
+        this.productInfoContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-product') || e.target.closest('.remove-product')) {
+                const btn = e.target.classList.contains('remove-product') ? e.target : e.target.closest('.remove-product');
+                this.removeProduct(btn);
             }
         });
 
-        if (products.length === 0) {
-            return;
-        }
+        this.productInfoContainer.addEventListener('input', (e) => {
+            if (e.target.matches('.product-title-field, .product-description-field')) {
+                this.updateCompositeValue();
+                this.clearFieldError(e.target);
+            }
+        });
 
-        var compositeValue = JSON.stringify(products.map(function (p) {
-            return {
-                ProductTitle: p.title,
-                ProductDescription: p.description
-            };
-        }));
-        // Option 2: Enhanced format with metadata (uncomment to use)
-        // var compositeValue = JSON.stringify({
-        //     items: products,
-        //     count: products.length,
-        //     lastUpdated: new Date().toISOString()
-        // });
-
-        // Option 3: Simple enhanced format (uncomment to use)
-        // var compositeValue = JSON.stringify(products.map(function(p) {
-        //     return {
-        //         id: p.id,
-        //         title: p.title,
-        //         description: p.description
-        //     };
-        // }));
-        compositeField.value = compositeValue;
-        compositeField.dispatchEvent(new Event('change', { bubbles: true }));
+        this.productInfoContainer.addEventListener('blur', (e) => {
+            if (e.target.matches('.product-title-field, .product-description-field')) {
+                this.validateField(e.target);
+                this.updateCompositeValue();
+            }
+        }, true);
     }
 
-    function attachFieldListeners(item) {
-        var titleField = item.querySelector('.product-title-field');
-        var descriptionField = item.querySelector('.product-description-field');
+    addProduct() {
+        if (!this.template) return;
+
+        const newItem = this.cloneTemplate();
+        this.productInfoContainer.appendChild(newItem);
+        this.productCount++;
+        this.updateProductNumbers();
+        this.updateCompositeValue();
+
+        // Focus on the first field of the new item
+        const firstField = newItem.querySelector('.product-title-field');
+        firstField?.focus();
+    }
+
+    cloneTemplate() {
+        const templateItem = this.template.querySelector('.product-info-item');
+        const newItem = templateItem.cloneNode(true);
+
+        // Update indices and IDs
+        newItem.dataset.productIndex = this.productCount;
+
+        // Update all field IDs and names
+        this.updateItemFields(newItem, this.productCount);
+
+        // Show remove button
+        const removeBtn = newItem.querySelector('.remove-product');
+        if (removeBtn) {
+            removeBtn.style.display = 'block';
+            removeBtn.dataset.index = this.productCount;
+        }
+
+        // Clear any template values
+        const titleField = newItem.querySelector('.product-title-field');
+        const descriptionField = newItem.querySelector('.product-description-field');
+        if (titleField) titleField.value = '';
+        if (descriptionField) descriptionField.value = '';
+
+        return newItem;
+    }
+
+    updateItemFields(item, index) {
+        const titleField = item.querySelector('.product-title-field');
+        const descriptionField = item.querySelector('.product-description-field');
 
         if (titleField) {
-            titleField.addEventListener('input', updateCompositeValue);
-            titleField.addEventListener('blur', updateCompositeValue);
+            titleField.id = `${this.fieldName}_ProductTitle_${index}`;
+            titleField.name = `${this.fieldName}_ProductTitle_${index}`;
+            titleField.dataset.index = index;
         }
 
         if (descriptionField) {
-            descriptionField.addEventListener('input', updateCompositeValue);
-            descriptionField.addEventListener('blur', updateCompositeValue);
+            descriptionField.id = `${this.fieldName}_ProductDescription_${index}`;
+            descriptionField.name = `${this.fieldName}_ProductDescription_${index}`;
+            descriptionField.dataset.index = index;
+        }
+
+        // Update labels' for attributes
+        const titleLabel = item.querySelector('label[for*="ProductTitle"]');
+        const descriptionLabel = item.querySelector('label[for*="ProductDescription"]');
+
+        if (titleLabel) {
+            titleLabel.setAttribute('for', `${this.fieldName}_ProductTitle_${index}`);
+        }
+
+        if (descriptionLabel) {
+            descriptionLabel.setAttribute('for', `${this.fieldName}_ProductDescription_${index}`);
+        }
+
+        // Update error message IDs
+        const titleError = item.querySelector('.product-title-field').getAttribute('aria-describedby');
+        const descriptionError = item.querySelector('.product-description-field').getAttribute('aria-describedby');
+
+        if (titleError) {
+            const newTitleErrorId = `ProductTitleErrorMessage_${index}`;
+            item.querySelector('.product-title-field').setAttribute('aria-describedby', newTitleErrorId);
+            item.querySelector('.product-title-field').nextElementSibling.id = newTitleErrorId;
+        }
+
+        if (descriptionError) {
+            const newDescriptionErrorId = `ProductDescriptionErrorMessage_${index}`;
+            item.querySelector('.product-description-field').setAttribute('aria-describedby', newDescriptionErrorId);
+            item.querySelector('.product-description-field').nextElementSibling.id = newDescriptionErrorId;
         }
     }
 
-    function updateProductNumbers() {
-        var productItems = productInfoContainer.querySelectorAll('.product-info-item');
-        productItems.forEach(function (item, index) {
-            var header = item.querySelector('h6');
+    removeProduct(removeBtn) {
+        const item = removeBtn.closest('.product-info-item');
+        const productItems = this.getProductItems();
+
+        if (item && productItems.length > 1) {
+            // Add a fade out animation
+            item.style.transition = 'opacity 0.3s ease';
+            item.style.opacity = '0';
+
+            setTimeout(() => {
+                item.remove();
+                this.updateProductNumbers();
+                this.updateCompositeValue();
+            }, 300);
+        }
+    }
+
+    updateProductNumbers() {
+        const productItems = this.getProductItems();
+
+        productItems.forEach((item, index) => {
+            // Update header
+            const header = item.querySelector('.product-number');
             if (header) {
-                header.textContent = 'Product ' + (index + 1);
+                const icon = header.querySelector('i');
+                const iconHtml = icon ? icon.outerHTML + ' ' : '';
+                header.innerHTML = `${iconHtml}Product ${index + 1}`;
             }
+
+            // Update data attribute
             item.dataset.productIndex = index;
 
-            // Update field indices
-            var titleField = item.querySelector('.product-title-field');
-            var descriptionField = item.querySelector('.product-description-field');
+            // Update field indices and IDs
+            this.updateItemFields(item, index);
 
-            if (titleField) {
-                titleField.dataset.index = index;
-                titleField.id = titleField.id.replace(/_\d+$/, '_' + index);
-            }
-
-            if (descriptionField) {
-                descriptionField.dataset.index = index;
-                descriptionField.id = descriptionField.id.replace(/_\d+$/, '_' + index);
+            // Update remove button
+            const removeBtn = item.querySelector('.remove-product');
+            if (removeBtn) {
+                removeBtn.dataset.index = index;
             }
         });
 
-        // Show/hide remove buttons
-        var removeButtons = productInfoContainer.querySelectorAll('.remove-product');
-        removeButtons.forEach(function (btn) {
-            btn.style.display = productItems.length > 1 ? 'block' : 'none';
+        // Show/hide remove buttons based on count
+        this.toggleRemoveButtons(productItems.length > 1);
+    }
+
+    toggleRemoveButtons(show) {
+        const removeButtons = this.productInfoContainer.querySelectorAll('.remove-product');
+        removeButtons.forEach(btn => {
+            btn.style.display = show ? 'block' : 'none';
         });
     }
 
-    function createProductItem(index) {
-        var template = `
-            <div class="product-info-item border p-3 mb-3" data-product-index="${index}">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0">Product ${index + 1}</h6>
-                    <button type="button" class="btn btn-sm btn-outline-danger remove-product" data-index="${index}">Remove</button>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="${compositeField.name}_ProductTitle_${index}" class="form-label">Product Title</label>
-                    <input id="${compositeField.name}_ProductTitle_${index}" 
-                           type="text" 
-                           class="form-control product-title-field"
-                           data-index="${index}" />
-                    <div class="invalid-feedback"></div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="${compositeField.name}_ProductDescription_${index}" class="form-label">Product Description</label>
-                    <textarea id="${compositeField.name}_ProductDescription_${index}" 
-                              class="form-control product-description-field"
-                              data-index="${index}"
-                              rows="3"></textarea>
-                    <div class="invalid-feedback"></div>
-                </div>
-            </div>
-        `;
+    validateField(field) {
+        const isRequired = field.hasAttribute('required');
+        const value = field.value.trim();
+        const errorContainer = field.nextElementSibling;
 
-        var div = document.createElement('div');
-        div.innerHTML = template.trim();
-        return div.firstChild;
+        if (isRequired && !value) {
+            const fieldType = field.dataset.fieldType;
+            const errorMessage = fieldType === 'title'
+                ? this.validationMessages.productTitleRequired || 'Spellman Serial Number is required'
+                : this.validationMessages.productDescriptionRequired || 'Failure/Problem/Error is required';
+
+            this.showFieldError(field, errorMessage);
+            return false;
+        } else {
+            this.clearFieldError(field);
+            return true;
+        }
     }
 
-    // Add product functionality
-    if (addProductBtn) {
-        addProductBtn.addEventListener('click', function () {
-            var newItem = createProductItem(productCount);
-            productInfoContainer.appendChild(newItem);
-            attachFieldListeners(newItem);
-            productCount++;
-            updateProductNumbers();
-            updateCompositeValue();
-        });
+    showFieldError(field, message) {
+        field.classList.add('is-invalid');
+        const errorContainer = field.nextElementSibling;
+        if (errorContainer && errorContainer.classList.contains('invalid-feedback')) {
+            errorContainer.textContent = message;
+        }
     }
 
-    // Remove product functionality (event delegation)
-    productInfoContainer.addEventListener('click', function (e) {
-        if (e.target.classList.contains('remove-product')) {
-            var item = e.target.closest('.product-info-item');
-            if (item && productInfoContainer.querySelectorAll('.product-info-item').length > 1) {
-                item.remove();
-                updateProductNumbers();
-                updateCompositeValue();
+    clearFieldError(field) {
+        field.classList.remove('is-invalid');
+        const errorContainer = field.nextElementSibling;
+        if (errorContainer && errorContainer.classList.contains('invalid-feedback')) {
+            errorContainer.textContent = '';
+        }
+    }
+
+    validateAllFields() {
+        const fields = this.productInfoContainer.querySelectorAll('.product-title-field, .product-description-field');
+        let isValid = true;
+
+        fields.forEach(field => {
+            if (!this.validateField(field)) {
+                isValid = false;
             }
+        });
+
+        return isValid;
+    }
+
+    updateCompositeValue() {
+        const products = this.collectProductData();
+
+        if (products.length === 0) {
+            this.compositeField.value = '';
+            return;
+        }
+
+        // Simple format - just title and description
+        const compositeValue = JSON.stringify(products.map(p => ({
+            ProductTitle: p.title,
+            ProductDescription: p.description
+        })));
+                // Option 2: Enhanced format with metadata (uncomment to use)
+                // var compositeValue = JSON.stringify({
+                //     items: products,
+                //     count: products.length,
+                //     lastUpdated: new Date().toISOString()
+                // });
+
+                // Option 3: Simple enhanced format (uncomment to use)
+                // var compositeValue = JSON.stringify(products.map(function(p) {
+                //     return {
+                //         id: p.id,
+                //         title: p.title,
+                //         description: p.description
+                //     };
+                // }));
+        this.compositeField.value = compositeValue;
+        this.compositeField.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    collectProductData() {
+        const products = [];
+        const productItems = this.getProductItems();
+
+        productItems.forEach((item, index) => {
+            const titleField = item.querySelector('.product-title-field');
+            const descriptionField = item.querySelector('.product-description-field');
+
+            if (titleField && descriptionField) {
+                const title = titleField.value.trim();
+                const description = descriptionField.value.trim();
+
+                // Only include products that have at least one field filled
+                if (title || description) {
+                    products.push({
+                        id: index + 1,
+                        title: title,
+                        description: description
+                    });
+                }
+            }
+        });
+
+        return products;
+    }
+
+    getProductItems() {
+        return this.productInfoContainer.querySelectorAll('.product-info-item');
+    }
+
+    // Public method for form validation
+    isValid() {
+        return this.validateAllFields();
+    }
+}
+
+// Initialize widgets when DOM is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    const containers = document.querySelectorAll('[data-sf-role="composite-field-container"]');
+    containers.forEach(container => {
+        const widget = new ProductCompositeWidget(container);
+        // Store widget instance for external access
+        container._productCompositeWidget = widget;
+    });
+});
+
+// Global validation hook for Sitefinity forms
+if (typeof window.sitefinityFormValidationHooks === 'undefined') {
+    window.sitefinityFormValidationHooks = [];
+}
+
+window.sitefinityFormValidationHooks.push(function (form) {
+    const containers = form.querySelectorAll('[data-sf-role="composite-field-container"]');
+    let isFormValid = true;
+    containers.forEach(container => {
+        const widget = container._productCompositeWidget;
+        if (widget && !widget.isValid()) {
+            isFormValid = false;
         }
     });
 
-    // Initialize existing items
-    var existingItems = productInfoContainer.querySelectorAll('.product-info-item');
-    existingItems.forEach(function (item) {
-        attachFieldListeners(item);
-    });
-
-    updateProductNumbers();
-    updateCompositeValue();
+    return isFormValid;
 });

@@ -2,7 +2,6 @@
 @using Progress.Sitefinity.AspNetCore.TagHelpers;
 @using Progress.Sitefinity.AspNetCore.Mvc.Rendering;
 @model Renderer.ViewModels.ProductCompositeViewModel
-
 @{
     var compositeFieldUniqueId = Model.FieldName;
     var compositeFieldErrorMessageId = Html.GetUniqueId("CompositeErrorMessage");
@@ -10,21 +9,19 @@
         ? $"aria-describedby='{compositeFieldUniqueId} {compositeFieldErrorMessageId}'"
         : $"aria-describedby='{compositeFieldErrorMessageId}'";
 }
-
 <script data-sf-role='start_field_@compositeFieldUniqueId' data-sf-role-field-name='@compositeFieldUniqueId'></script>
-
 <div class="mb-3 @Model.CssClass"
      data-sf-role="composite-field-container"
      data-composite-id="@compositeFieldUniqueId"
      data-field-name="@Model.FieldName">
-
     <input data-sf-role="violation-messages" type="hidden" value='@Model.ViolationRestrictionsMessages' />
-
+    
     <!-- Label and instructional text -->
     @if (!string.IsNullOrEmpty(Model.Label))
     {
         <label class="form-label" for="@compositeFieldUniqueId">@Model.Label</label>
     }
+    
     <!-- Hidden field to store the composite JSON value -->
     <input type="hidden"
            id="@compositeFieldUniqueId"
@@ -33,11 +30,12 @@
            @(Model.Readonly ? "readonly" : "")
            @Html.Raw(ariaDescribedByAttribute)
            @Html.Raw(Model.ValidationAttributes) />
+    
     @if (Model.HasDescription)
     {
         <div class="form-text mb-2">@Model.InstructionalText</div>
     }
-
+    
     <!-- Dynamic product info fields container -->
     <div id="product-info-container" class="product-items-container">
         @for (int i = 0; i < Model.ProductInfoList.Count; i++)
@@ -45,35 +43,41 @@
             @await Html.PartialAsync("~/Views/Shared/Components/ProductComposite/_ProductItem.cshtml", Model.ProductInfoList[i])
         }
     </div>
-
+    
+    <!-- Add new product button -->
+    <button type="button" id="add-product-btn" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add Additional Item
+    </button>
+    
+    <!-- Error message container -->
+    <div id="@compositeFieldErrorMessageId" class="invalid-feedback"></div>
     <!-- Hidden template for cloning -->
     <div id="product-item-template" style="display: none;">
         @{
             var templateModel = new Renderer.ViewModels.ProductInfoViewModel
             {
                 Index = -1,
-                ProductTitleFieldName = "template_ProductTitle_-1",
-                ProductDescriptionFieldName = "template_ProductDescription_-1",
-                ProductTitleLabel = "Spellman Serial Number",
-                ProductDescriptionLabel = "Failure/Problem/Error",
-                ProductTitleValidationAttributes = Model.ProductInfoList.FirstOrDefault()?.ProductTitleValidationAttributes ?? "",
-                ProductDescriptionValidationAttributes = Model.ProductInfoList.FirstOrDefault()?.ProductDescriptionValidationAttributes ?? ""
+                SpellmanSerialNumberFieldName = "template_spellmanSerialNumber_-1",
+                SpellmanPartNumberFieldName = "template_spellmanPartNumber_-1",
+                FailureProblemErrorFieldName = "template_failureProblemError_-1",
+                RepairPO_ReferenceNumberFieldName = "template_repairPO_ReferenceNumberError_-1",
+
+                SpellmanSerialNumberLabel = "Spellman Serial Number",
+                SpellmanPartNumberLabel = "Spellman Part Number",
+                FailureProblemErrorLabel = "Failure/Problem/Error",
+                RepairPO_ReferenceNumberLabel = "Repair PO/Reference Number",
+
+                SpellmanSerialNumberValidationAttributes = Model.ProductInfoList.FirstOrDefault()?.SpellmanSerialNumberValidationAttributes ?? "required=\"required\" ",
+                SpellmanPartNumberValidationAttributes = "",
+                FailureProblemErrorValidationAttributes = Model.ProductInfoList.FirstOrDefault()?.FailureProblemErrorValidationAttributes ?? "required=\"required\" ",
+                RepairPO_ReferenceNumberValidationAttributes=""
             };
         }
         @await Html.PartialAsync("~/Views/Shared/Components/ProductComposite/_ProductItem.cshtml", templateModel)
     </div>
-
-    <!-- Add new product button -->
-    <button type="button" id="add-product-btn" class="btn btn-outline-primary">
-        <i class="fas fa-plus"></i> Add Another Product
-    </button>
-
-    <!-- Error message container -->
-    <div id="@compositeFieldErrorMessageId" class="invalid-feedback"></div>
 </div>
 
 <!-- Pass validation messages to JavaScript -->
 <script type="application/json" id="@(compositeFieldUniqueId)_ValidationMessages">@Html.Raw(Model.ViolationRestrictionsMessages)</script>
-
 <script src="~/js/form-widgets/product-composite-widget.js"></script>
-<script data-sf-role='end_field_@compositeFieldUniqueId'></script>
+<script data-sf-role='end_field_@compositeFieldUniqueId'></script>   

@@ -27,26 +27,14 @@ namespace Renderer.Entities
         [Group("Options")]
         public bool Required { get; set; }
 
-        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 8)]
+        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 4)]
         [DisplayName("Hide field initially (use form rules to display it)")]
         [DataType(customDataType: KnownFieldTypes.CheckBox)]
         [Group("Options")]
         public bool Hidden { get; set; }
 
-        [DisplayName("Require Spellman Serial Number")]
-        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 5)]
-        [DataType(customDataType: KnownFieldTypes.CheckBox)]
-        [Group("Options")]
-        public bool ProductTitleRequired { get; set; } = true;
-
-        [DisplayName("Require Failure/Problem/Error")]
-        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 6)]
-        [DataType(customDataType: KnownFieldTypes.CheckBox)]
-        [Group("Options")]
-        public bool ProductDescriptionRequired { get; set; } = true;
-
         [DisplayName("Error message if the field is empty")]
-        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 7)]
+        [ContentSection(Constants.ContentSectionTitles.LabelsAndContent, 5)]
         [DefaultValue("{0} field is required")]
         [ConditionalVisibility("{\"conditions\":[{\"fieldName\":\"Required\",\"operator\":\"Equals\",\"value\":true}]}")]
         public string RequiredErrorMessage { get; set; }

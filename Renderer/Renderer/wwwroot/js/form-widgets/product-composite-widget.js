@@ -7,11 +7,58 @@
         this.template = container.querySelector('#product-item-template');
         this.fieldName = container.dataset.fieldName;
 
+        // Define field configuration
+        this.fieldConfig = [
+            {
+                key: 'spellmanSerialNumber',
+                label: 'Spellman Serial Number',
+                type: 'input',
+                placeholder: 'Enter serial number',
+                required: true,
+                cssClass: 'spellman-serial-field'
+            },
+            {
+                key: 'spellmanPartNumber',
+                label: 'Spellman Part Number',
+                type: 'input',
+                placeholder: 'Enter part number',
+                required: false,
+                cssClass: 'spellman-part-field'
+            },
+            {
+                key: 'failureProblemError',
+                label: 'Failure/Problem/Error',
+                type: 'textarea',
+                placeholder: 'Describe the failure, problem, or error',
+                required: true,
+                rows: 3,
+                cssClass: 'failure-problem-field'
+            },
+
+            {
+                key: 'repairPO_ReferenceNumber',
+                label: 'Repair PO/Reference Number',
+                type: 'input',
+                placeholder: 'Repair PO/Reference Number',
+                required: false,
+                cssClass: 'repair-po_reference-field'
+            },
+
+            {
+                key: 'additionalEquipment',
+                label: 'Additional Equipment',
+                rows: 3,
+                placeholder: 'Additional Equipment',
+                required: false,
+                cssClass: 'additional-equipment-field'
+            },
+        ];
+
         // Load validation messages
         this.validationMessages = this.loadValidationMessages();
 
         this.productCount = this.getProductItems().length;
-        console.log("Container ", this.container )
+       
         this.init();
     }
 
@@ -45,15 +92,18 @@
             }
         });
 
+        // Create dynamic field selector for input events
+        const fieldSelectors = this.fieldConfig.map(field => `.${field.cssClass}`).join(', ');
+
         this.productInfoContainer.addEventListener('input', (e) => {
-            if (e.target.matches('.product-title-field, .product-description-field')) {
+            if (e.target.matches(fieldSelectors)) {
                 this.updateCompositeValue();
                 this.clearFieldError(e.target);
             }
         });
 
         this.productInfoContainer.addEventListener('blur', (e) => {
-            if (e.target.matches('.product-title-field, .product-description-field')) {
+            if (e.target.matches(fieldSelectors)) {
                 this.validateField(e.target);
                 this.updateCompositeValue();
             }
@@ -62,7 +112,6 @@
 
     addProduct() {
         if (!this.template) return;
-
         const newItem = this.cloneTemplate();
         this.productInfoContainer.appendChild(newItem);
         this.productCount++;
@@ -70,7 +119,7 @@
         this.updateCompositeValue();
 
         // Focus on the first field of the new item
-        const firstField = newItem.querySelector('.product-title-field');
+        const firstField = newItem.querySelector(`.${this.fieldConfig[0].cssClass}`);
         firstField?.focus();
     }
 
@@ -92,57 +141,38 @@
         }
 
         // Clear any template values
-        const titleField = newItem.querySelector('.product-title-field');
-        const descriptionField = newItem.querySelector('.product-description-field');
-        if (titleField) titleField.value = '';
-        if (descriptionField) descriptionField.value = '';
+        this.fieldConfig.forEach(fieldConfig => {
+            const field = newItem.querySelector(`.${fieldConfig.cssClass}`);
+            if (field) field.value = '';
+        });
 
         return newItem;
     }
 
     updateItemFields(item, index) {
-        const titleField = item.querySelector('.product-title-field');
-        const descriptionField = item.querySelector('.product-description-field');
+        this.fieldConfig.forEach(fieldConfig => {
+            const field = item.querySelector(`.${fieldConfig.cssClass}`);
+            if (field) {
+                field.id = `${this.fieldName}_${fieldConfig.key}_${index}`;
+                field.name = `${this.fieldName}_${fieldConfig.key}_${index}`;
+                field.dataset.index = index;
+                field.dataset.fieldKey = fieldConfig.key;
+            }
 
-        if (titleField) {
-            titleField.id = `${this.fieldName}_ProductTitle_${index}`;
-            titleField.name = `${this.fieldName}_ProductTitle_${index}`;
-            titleField.dataset.index = index;
-        }
+            // Update labels' for attributes
+            const label = item.querySelector(`label[for*="${fieldConfig.key}"]`);
+            if (label) {
+                label.setAttribute('for', `${this.fieldName}_${fieldConfig.key}_${index}`);
+            }
 
-        if (descriptionField) {
-            descriptionField.id = `${this.fieldName}_ProductDescription_${index}`;
-            descriptionField.name = `${this.fieldName}_ProductDescription_${index}`;
-            descriptionField.dataset.index = index;
-        }
-
-        // Update labels' for attributes
-        const titleLabel = item.querySelector('label[for*="ProductTitle"]');
-        const descriptionLabel = item.querySelector('label[for*="ProductDescription"]');
-
-        if (titleLabel) {
-            titleLabel.setAttribute('for', `${this.fieldName}_ProductTitle_${index}`);
-        }
-
-        if (descriptionLabel) {
-            descriptionLabel.setAttribute('for', `${this.fieldName}_ProductDescription_${index}`);
-        }
-
-        // Update error message IDs
-        const titleError = item.querySelector('.product-title-field').getAttribute('aria-describedby');
-        const descriptionError = item.querySelector('.product-description-field').getAttribute('aria-describedby');
-
-        if (titleError) {
-            const newTitleErrorId = `ProductTitleErrorMessage_${index}`;
-            item.querySelector('.product-title-field').setAttribute('aria-describedby', newTitleErrorId);
-            item.querySelector('.product-title-field').nextElementSibling.id = newTitleErrorId;
-        }
-
-        if (descriptionError) {
-            const newDescriptionErrorId = `ProductDescriptionErrorMessage_${index}`;
-            item.querySelector('.product-description-field').setAttribute('aria-describedby', newDescriptionErrorId);
-            item.querySelector('.product-description-field').nextElementSibling.id = newDescriptionErrorId;
-        }
+            // Update error message IDs
+            const errorElement = item.querySelector(`.${fieldConfig.key}-error`);
+            if (errorElement) {
+                const newErrorId = `${fieldConfig.key}ErrorMessage_${index}`;
+                field.setAttribute('aria-describedby', newErrorId);
+                errorElement.id = newErrorId;
+            }
+        });
     }
 
     removeProduct(removeBtn) {
@@ -199,16 +229,16 @@
     }
 
     validateField(field) {
-        const isRequired = field.hasAttribute('required');
+        const fieldKey = field.dataset.fieldKey;
+        const fieldConfig = this.fieldConfig.find(config => config.key === fieldKey);
+
+        if (!fieldConfig) return true;
+
+        const isRequired = fieldConfig.required;
         const value = field.value.trim();
-        const errorContainer = field.nextElementSibling;
 
         if (isRequired && !value) {
-            const fieldType = field.dataset.fieldType;
-            const errorMessage = fieldType === 'title'
-                ? this.validationMessages.productTitleRequired || 'Spellman Serial Number is required'
-                : this.validationMessages.productDescriptionRequired || 'Failure/Problem/Error is required';
-
+            const errorMessage = this.validationMessages[`${fieldKey}Required`] || `${fieldConfig.label} is required`;
             this.showFieldError(field, errorMessage);
             return false;
         } else {
@@ -234,7 +264,8 @@
     }
 
     validateAllFields() {
-        const fields = this.productInfoContainer.querySelectorAll('.product-title-field, .product-description-field');
+        const fieldSelectors = this.fieldConfig.map(field => `.${field.cssClass}`).join(', ');
+        const fields = this.productInfoContainer.querySelectorAll(fieldSelectors);
         let isValid = true;
 
         fields.forEach(field => {
@@ -254,26 +285,15 @@
             return;
         }
 
-        // Simple format - just title and description
-        const compositeValue = JSON.stringify(products.map(p => ({
-            ProductTitle: p.title,
-            ProductDescription: p.description
-        })));
-                // Option 2: Enhanced format with metadata (uncomment to use)
-                // var compositeValue = JSON.stringify({
-                //     items: products,
-                //     count: products.length,
-                //     lastUpdated: new Date().toISOString()
-                // });
+        // Create composite value with all configured fields
+        const compositeValue = JSON.stringify(products.map(p => {
+            const productData = {};
+            this.fieldConfig.forEach(fieldConfig => {
+                productData[fieldConfig.key] = p[fieldConfig.key] || '';
+            });
+            return productData;
+        }));
 
-                // Option 3: Simple enhanced format (uncomment to use)
-                // var compositeValue = JSON.stringify(products.map(function(p) {
-                //     return {
-                //         id: p.id,
-                //         title: p.title,
-                //         description: p.description
-                //     };
-                // }));
         this.compositeField.value = compositeValue;
         this.compositeField.dispatchEvent(new Event('change', { bubbles: true }));
     }
@@ -283,21 +303,21 @@
         const productItems = this.getProductItems();
 
         productItems.forEach((item, index) => {
-            const titleField = item.querySelector('.product-title-field');
-            const descriptionField = item.querySelector('.product-description-field');
+            const productData = { id: index + 1 };
+            let hasData = false;
 
-            if (titleField && descriptionField) {
-                const title = titleField.value.trim();
-                const description = descriptionField.value.trim();
-
-                // Only include products that have at least one field filled
-                if (title || description) {
-                    products.push({
-                        id: index + 1,
-                        title: title,
-                        description: description
-                    });
+            this.fieldConfig.forEach(fieldConfig => {
+                const field = item.querySelector(`.${fieldConfig.cssClass}`);
+                if (field) {
+                    const value = field.value.trim();
+                    productData[fieldConfig.key] = value;
+                    if (value) hasData = true;
                 }
+            });
+
+            // Only include products that have at least one field filled
+            if (hasData) {
+                products.push(productData);
             }
         });
 
@@ -311,6 +331,16 @@
     // Public method for form validation
     isValid() {
         return this.validateAllFields();
+    }
+
+    // Helper method to add new field configurations programmatically
+    addFieldConfig(fieldConfig) {
+        this.fieldConfig.push(fieldConfig);
+    }
+
+    // Helper method to get field configuration
+    getFieldConfig() {
+        return this.fieldConfig;
     }
 }
 

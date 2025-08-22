@@ -1,68 +1,122 @@
 ﻿@using Progress.Sitefinity.AspNetCore.Mvc.Rendering;
 @model Renderer.ViewModels.ProductInfoViewModel
-
 @{
-    var productTitleErrorMessageId = Html.GetUniqueId("ProductTitleErrorMessage");
-    var productDescriptionErrorMessageId = Html.GetUniqueId("ProductDescriptionErrorMessage");
+    var spellmanSerialErrorMessageId = Html.GetUniqueId("SpellmanSerialErrorMessage");
+    var spellmanPartErrorMessageId = Html.GetUniqueId("SpellmanPartErrorMessage");
+    var failureProblemErrorMessageId = Html.GetUniqueId("FailureProblemErrorMessage");
+    var additionalEquipmentErrorMessageId = Html.GetUniqueId("AdditionalEquipmentErrorMessage");
+    var repairPO_ReferenceNumberErrorMessageId = Html.GetUniqueId("RepairPO_ReferenceNumberErrorMessage");
     var isTemplate = Model.Index == -1;
     var displayIndex = isTemplate ? 1 : Model.Index + 1;
-    var isRequired = !string.IsNullOrEmpty(Model.ProductTitleValidationAttributes);
 }
-
 <div class="product-info-item border rounded p-3 mb-3" data-product-index="@Model.Index">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="mb-0 product-number text-primary">
-            <i class="fas fa-box me-2"></i>Product @displayIndex
-        </h6>
         <button type="button"
                 class="btn btn-sm btn-outline-danger remove-product"
                 data-index="@Model.Index"
                 title="Remove this product"
-                style="@(isTemplate ? "display: none;" : "")xx">
+                style="@(isTemplate ? "display: none;" : "")">
             <i class="fas fa-trash-alt me-1"></i>Remove
         </button>
     </div>
-
+    <div class="d-flex flex-column justify-content-center text-center">
+        <h3>
+            Defective Part(s) Information
+        </h3>
+        <p>
+            Please enter the following information regarding the defective part:
+        </p>
+    </div>
+    <hr/>
     <div class="row">
-        <div class="col-12 col-md-6 mb-3">
-            <label for="@Model.ProductTitleFieldName" class="form-label">
-                @Model.ProductTitleLabel
-                @if (!string.IsNullOrEmpty(Model.ProductTitleValidationAttributes))
-                {
-                    <span class="text-danger">*</span>
-                }
+
+        <!-- Spellman Serial Number (Required) -->
+        <div class="col-12 col-md-2 mb-3">
+            <label for="@Model.SpellmanSerialNumberFieldName" class="form-label">
+                @Model.SpellmanSerialNumberLabel
+                <span class="text-danger">*</span>
             </label>
-            <input id="@Model.ProductTitleFieldName"
-                   name="@Model.ProductTitleFieldName"
+            <input id="@Model.SpellmanSerialNumberFieldName"
+                   name="@Model.SpellmanSerialNumberFieldName"
                    type="text"
-                   class="form-control product-title-field"
+                   class="form-control spellman-serial-field"
                    placeholder="Enter serial number"
                    data-index="@Model.Index"
-                   data-field-type="title"
-                   value="@Model.ProductTitleValue"
-                   @Html.Raw(Model.ProductTitleValidationAttributes)
-                   aria-describedby="@productTitleErrorMessageId" />
-            <div id="@productTitleErrorMessageId" class="invalid-feedback"></div>
+                   data-field-key="spellmanSerialNumber"
+                   value="@Model.SpellmanSerialNumberValue"
+                   @Html.Raw(Model.SpellmanSerialNumberValidationAttributes)
+                   aria-describedby="@spellmanSerialErrorMessageId" />
+            <div id="@spellmanSerialErrorMessageId" class="invalid-feedback spellmanSerialNumber-error"></div>
         </div>
 
-        <div class="col-12 col-md-6 mb-3">
-            <label for="@Model.ProductDescriptionFieldName" class="form-label">
-                @Model.ProductDescriptionLabel
-                @if (!string.IsNullOrEmpty(Model.ProductDescriptionValidationAttributes))
-                {
-                    <span class="text-danger">*</span>
-                }
+        <!-- Spellman Part Number (Optional) -->
+        <div class="col-12 col-md-2 mb-3">
+            <label for="@Model.SpellmanPartNumberFieldName" class="form-label">
+                @Model.SpellmanPartNumberLabel
             </label>
-            <textarea id="@Model.ProductDescriptionFieldName"
-                      name="@Model.ProductDescriptionFieldName"
-                      class="form-control product-description-field"
+            <input id="@Model.SpellmanPartNumberFieldName"
+                   name="@Model.SpellmanPartNumberFieldName"
+                   type="text"
+                   class="form-control spellman-part-field"
+                   placeholder="Enter part number"
+                   data-index="@Model.Index"
+                   data-field-key="spellmanPartNumber"
+                   value="@Model.SpellmanPartNumberValue"
+                   @Html.Raw(Model.SpellmanPartNumberValidationAttributes)
+                   aria-describedby="@spellmanPartErrorMessageId" />
+            <div id="@spellmanPartErrorMessageId" class="invalid-feedback spellmanPartNumber-error"></div>
+        </div>
+
+        <!-- Repair PO/Reference Number (Optional) -->
+        <div class="col-12 col-md-2 mb-3">
+            <label for="@Model.RepairPO_ReferenceNumberFieldName" class="form-label">
+                @Model.RepairPO_ReferenceNumberLabel
+            </label>
+            <input id="@Model.RepairPO_ReferenceNumberFieldName"
+                   name="@Model.RepairPO_ReferenceNumberFieldName"
+                   type="text"
+                   class="form-control repair-po_reference-field"
+                   placeholder="Repair PO/Reference Number"
+                   data-index="@Model.Index"
+                   data-field-key="repairPO_ReferenceNumber"
+                   value="@Model.RepairPO_ReferenceNumberValue"
+                   @Html.Raw(Model.FailureProblemErrorValidationAttributes)
+                   aria-describedby="@repairPO_ReferenceNumberErrorMessageId" />
+            <div id="@repairPO_ReferenceNumberErrorMessageId" class="invalid-feedback repairPO_ReferenceNumber-error"></div>
+        </div>
+        <!-- Failure/Problem/Error (Required) -->
+        <div class="col-12 col-md-3 mb-3">
+            <label for="@Model.FailureProblemErrorFieldName" class="form-label">
+                @Model.FailureProblemErrorLabel
+                <span class="text-danger">*</span>
+            </label>
+            <textarea id="@Model.FailureProblemErrorFieldName"
+                      name="@Model.FailureProblemErrorFieldName"
+                      class="form-control failure-problem-field"
                       placeholder="Describe the failure, problem, or error"
                       data-index="@Model.Index"
-                      data-field-type="description"
+                      data-field-key="failureProblemError"
                       rows="3"
-                      @Html.Raw(Model.ProductDescriptionValidationAttributes)
-                      aria-describedby="@productDescriptionErrorMessageId">@Model.ProductDescriptionValue</textarea>
-            <div id="@productDescriptionErrorMessageId" class="invalid-feedback"></div>
+                      @Html.Raw(Model.FailureProblemErrorValidationAttributes)
+                      aria-describedby="@failureProblemErrorMessageId">@Model.FailureProblemErrorValue</textarea>
+            <div id="@failureProblemErrorMessageId" class="invalid-feedback failureProblemError-error"></div>
+        </div>
+
+        <!-- Additional Equipment (Optional) -->
+        <div class="col-12 col-md-3 mb-3">
+            <label for="@Model.AdditionalEquipmentFieldName" class="form-label">
+                @Model.AdditionalEquipmentLabel
+            </label>
+            <textarea id="@Model.AdditionalEquipmentFieldName"
+                      name="@Model.AdditionalEquipmentFieldName"
+                      class="form-control additional-equipment-field"
+                      placeholder="Additional Equipment"
+                      data-index="@Model.Index"
+                      data-field-key="additionalEquipment"
+                      rows="3"
+                      @Html.Raw(Model.AdditionalEquipmentValidationAttributes)
+                      aria-describedby="@additionalEquipmentErrorMessageId">@Model.AdditionalEquipmentValue</textarea>
+            <div id="@additionalEquipmentErrorMessageId" class="invalid-feedback additionalEquipmentr-error"></div>
         </div>
     </div>
 </div>

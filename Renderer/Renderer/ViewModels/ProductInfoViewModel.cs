@@ -1,18 +1,40 @@
-﻿namespace Renderer.ViewModels
+﻿using System.Security.Cryptography.Xml;
+
+namespace Renderer.ViewModels
 {
     public class ProductInfoViewModel
     {
         public int Index { get; set; }
-        public string ProductTitleFieldName { get; set; }
-        public string ProductDescriptionFieldName { get; set; }
 
-        public string ProductTitleLabel { get; set; } = "Spellman Serial Number";
-        public string ProductDescriptionLabel { get; set; } = "Failure/Problem/Error";
+        // Spellman Serial Number (Required)
+        public string SpellmanSerialNumberFieldName { get; set; }
+        public string SpellmanSerialNumberLabel { get; set; } = "Spellman Serial Number";
+        public string SpellmanSerialNumberValidationAttributes { get; set; }
+        public string SpellmanSerialNumberValue { get; set; }
 
-        public string ProductTitleValidationAttributes { get; set; }
-        public string ProductDescriptionValidationAttributes { get; set; }
+        // Spellman Part Number (Optional)
+        public string SpellmanPartNumberFieldName { get; set; }
+        public string SpellmanPartNumberLabel { get; set; } = "Spellman Part Number";
+        public string SpellmanPartNumberValidationAttributes { get; set; }
+        public string SpellmanPartNumberValue { get; set; }
 
-        public string ProductTitleValue { get; set; }
-        public string ProductDescriptionValue { get; set; }
+        // Spellman Part Number (Optional)
+        public string RepairPO_ReferenceNumberFieldName { get; set; }
+        public string RepairPO_ReferenceNumberLabel { get; set; } = "Repair PO/Reference Number";
+        public string RepairPO_ReferenceNumberValidationAttributes { get; set; }
+        public string RepairPO_ReferenceNumberValue { get; set; }
+
+        // Failure/Problem/Error (Required)
+        public string FailureProblemErrorFieldName { get; set; }
+        public string FailureProblemErrorLabel { get; set; } = "Failure/Problem/Error";
+        public string FailureProblemErrorValidationAttributes { get; set; }
+        public string FailureProblemErrorValue { get; set; }
+
+        // Additional Equipment (Required)
+        public string AdditionalEquipmentFieldName { get; set; }
+        public string AdditionalEquipmentLabel { get; set; } = "Additional Equipment";
+        public string AdditionalEquipmentValidationAttributes { get; set; }
+        public string AdditionalEquipmentValue { get; set; }
     }
 }
+

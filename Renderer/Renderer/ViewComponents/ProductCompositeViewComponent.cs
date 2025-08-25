@@ -68,10 +68,15 @@ namespace Renderer.ViewComponents
                 FailureProblemErrorLabel = "Failure/Problem/Error",
                 FailureProblemErrorValidationAttributes = BuildValidationAttributes(true),
 
-                 // Failure/Problem/Error (Optional)
+                // Additiona lEquipment (Optional)
                 AdditionalEquipmentFieldName = $"{fieldName}_additionalEquipment_{index}",
                 AdditionalEquipmentLabel = "Additional Equipment",
-                AdditionalEquipmentValidationAttributes = BuildValidationAttributes(false)
+                AdditionalEquipmentValidationAttributes = BuildValidationAttributes(false),
+
+                  // Installation Country (Optional)
+                InstallationCountryFieldName = $"{fieldName}_installationCountry_{index}",
+                InstallationCountryLabel = "Installation Country",
+                InstallationCountryValidationAttributes = BuildValidationAttributes(false)
             };
         }
 
@@ -84,7 +89,8 @@ namespace Renderer.ViewComponents
                 ["spellmanPartNumberRequired"] = "Spellman Part Number is required",
                 ["repairPO_ReferenceNumberRequired"] = "Repair PO/Reference Number is required",
                 ["failureProblemErrorRequired"] = "Failure/Problem/Error is required",
-                ["additionalEquipmentRequired"] = "Additional Equipment is required"
+                ["additionalEquipmentRequired"] = "Additional Equipment is required",
+                ["installationCountryRequired"] = "Installation Countryt is required"
             };
         }
 

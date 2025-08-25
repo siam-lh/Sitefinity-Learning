@@ -6,6 +6,7 @@
     var failureProblemErrorMessageId = Html.GetUniqueId("FailureProblemErrorMessage");
     var additionalEquipmentErrorMessageId = Html.GetUniqueId("AdditionalEquipmentErrorMessage");
     var repairPO_ReferenceNumberErrorMessageId = Html.GetUniqueId("RepairPO_ReferenceNumberErrorMessage");
+    var installationCountryErrorMessageId = Html.GetUniqueId("InstallationCountryErrorMessage");
     var isTemplate = Model.Index == -1;
     var displayIndex = isTemplate ? 1 : Model.Index + 1;
 }
@@ -85,7 +86,7 @@
             <div id="@repairPO_ReferenceNumberErrorMessageId" class="invalid-feedback repairPO_ReferenceNumber-error"></div>
         </div>
         <!-- Failure/Problem/Error (Required) -->
-        <div class="col-12 col-md-3 mb-3">
+        <div class="col-12 col-md-2 mb-3">
             <label for="@Model.FailureProblemErrorFieldName" class="form-label">
                 @Model.FailureProblemErrorLabel
                 <span class="text-danger">*</span>
@@ -103,7 +104,7 @@
         </div>
 
         <!-- Additional Equipment (Optional) -->
-        <div class="col-12 col-md-3 mb-3">
+        <div class="col-12 col-md-2 mb-3">
             <label for="@Model.AdditionalEquipmentFieldName" class="form-label">
                 @Model.AdditionalEquipmentLabel
             </label>
@@ -118,5 +119,32 @@
                       aria-describedby="@additionalEquipmentErrorMessageId">@Model.AdditionalEquipmentValue</textarea>
             <div id="@additionalEquipmentErrorMessageId" class="invalid-feedback additionalEquipmentr-error"></div>
         </div>
+
+
+        <!-- InstallationCountry -->
+        <div class="col-12 col-md-2 mb-3">
+        <label for="@Model.InstallationCountryFieldName" class="form-label">
+            @Model.InstallationCountryLabel
+        </label>
+            <select id="@Model.InstallationCountryFieldName"
+                    name="@Model.InstallationCountryFieldName"
+                    class="form-control installation-country-field"
+                    data-index="@Model.Index"
+                    data-field-key="installationCountry"
+                    @Html.Raw(Model.InstallationCountryValidationAttributes)
+                    aria-describedby="@installationCountryErrorMessageId">
+                @foreach (var country in new[] { "USA", "Bangladesh", "India", "Pakistan", "Nepal", "Bhutan", "Sri Lanka", "Maldives", "China", "UK" })
+                {
+                    <option value="@country" selected="@(country == Model.InstallationCountryValue)">
+                        @country
+                    </option>
+                }
+
+            </select>
+
+        <div id="@installationCountryErrorMessageId" class="invalid-feedback installationCountry-error"></div>
+</div>
+
+
     </div>
 </div>

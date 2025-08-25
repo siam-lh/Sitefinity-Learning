@@ -327,6 +327,31 @@ custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
         }
 }
 
+/*product complaint form*/
+.products_form{
+    max-height:700px;
+    overflow-y:scroll;
+    overflow-x:clip;
+}
+
+.products_form form [data-sf-role="fields-container"] > section:first-of-type {
+}
+
+.products_form form [data-sf-role="fields-container"] > section:nth-of-type(2) {
+
+}
+.products_form form [data-sf-role="fields-container"] > section:nth-of-type(3) {
+    display:none;
+}
+
+.products_form form [data-sf-role="fields-container"] > section:nth-of-type(4) {
+}
+#submitBtn {
+    display: none;
+}
+#backBtn {
+    display: none;
+}
 @media (max-width: 576px) {
     .horizontal-tabs-navbar {
         padding: 2px 20px;

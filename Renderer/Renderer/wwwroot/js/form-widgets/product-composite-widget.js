@@ -52,6 +52,14 @@
                 required: false,
                 cssClass: 'additional-equipment-field'
             },
+
+            {
+                key: 'installationCountry',
+                label: 'Installation Country',
+                placeholder: 'Installation Country',
+                required: false,
+                cssClass: 'installation-country-field'
+            },
         ];
 
         // Load validation messages
@@ -279,7 +287,6 @@
 
     updateCompositeValue() {
         const products = this.collectProductData();
-
         if (products.length === 0) {
             this.compositeField.value = '';
             return;

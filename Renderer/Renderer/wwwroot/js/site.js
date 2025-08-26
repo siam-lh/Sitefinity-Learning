@@ -49,6 +49,78 @@
         section3.style.display = "none";
         backBtn.style.display = "none";
         submitBtn.style.display = "none";
+        updateProgressBar();
+    }
+ 
+   
+    function handleContinueClick() {
+        if (complaintFormStep === 1) {
+            var allInputs = section2.querySelectorAll('input, textarea, select');
+
+            var visibleInputs = Array.from(allInputs).filter(input => {
+                return input.offsetParent !== null;
+            });
+
+            var valid = true;
+
+            visibleInputs.forEach(function (input) {
+                if (!input.checkValidity()) {
+                    input.reportValidity(); 
+                    valid = false;
+                }
+            });
+
+            if (!valid) return;
+
+
+            section2.style.display = "none";
+            section3.style.display = "block";
+            backBtn.style.display = "inline-block";
+            complaintFormStep = 2;
+            updateProgressBar();
+        } else if (complaintFormStep === 2) {
+            var allInputs = section3.querySelectorAll('input, textarea, select');
+
+            var visibleInputs = Array.from(allInputs).filter(input => {
+                return input.offsetParent !== null;
+            });
+
+            var valid = true;
+
+            visibleInputs.forEach(function (input) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    valid = false;
+                }
+            });
+
+            if (!valid) return;
+            section2.style.display = "block";
+            section3.style.display = "block";
+            continueBtn.style.display = "none";
+            submitBtn.style.display = "inline-block";
+            complaintFormStep = 3;
+            updateProgressBar();
+            //makeFieldsReadOnly();
+        }
+    }
+
+    function handleBackClick() {
+        if (complaintFormStep === 2) {
+            section2.style.display = "block";
+            section3.style.display = "none";
+            backBtn.style.display = "none";
+            complaintFormStep = 1;
+
+        } else if (complaintFormStep === 3) {
+            section2.style.display = "none";
+            section3.style.display = "block";
+            continueBtn.style.display = "inline-block";
+            submitBtn.style.display = "none";
+            complaintFormStep = 2;
+
+            //makeFieldsEditable();
+        }
     }
     function makeFieldsReadOnly() {
         const inputFields = document.querySelectorAll('.products_form input:not([type="checkbox"]):not([type="radio"]), .products_form textarea');
@@ -83,92 +155,21 @@
         });
     }
 
+    function updateProgressBar() {
+        const steps = document.querySelectorAll(".step");
+        const progress = document.getElementById("progress");
 
-    function handleContinueClick() {
-        if (complaintFormStep === 1) {
-            section2.style.display = "none";
-            section3.style.display = "block";
-            backBtn.style.display = "inline-block";
-            complaintFormStep = 2;
+        steps.forEach((step, index) => {
+            step.classList.remove("active", "completed");
+            if (index < complaintFormStep - 1) {
+                step.classList.add("completed");
+            } else if (index === complaintFormStep - 1) {
+                step.classList.add("active");
+            }
+        });
 
-        } else if (complaintFormStep === 2) {
-            section2.style.display = "block";
-            section3.style.display = "block";
-            continueBtn.style.display = "none";
-            submitBtn.style.display = "inline-block";
-            complaintFormStep = 3;
-
-            // Make fields read-only / disabled safely
-            //makeFieldsReadOnly();
-        }
+        progress.style.width = ((complaintFormStep - 1) / (steps.length - 1)) * 100 + "%";
     }
-
-    function handleBackClick() {
-        if (complaintFormStep === 2) {
-            section2.style.display = "block";
-            section3.style.display = "none";
-            backBtn.style.display = "none";
-            complaintFormStep = 1;
-
-        } else if (complaintFormStep === 3) {
-            section2.style.display = "none";
-            section3.style.display = "block";
-            continueBtn.style.display = "inline-block";
-            submitBtn.style.display = "none";
-            complaintFormStep = 2;
-
-            // Make fields editable again
-            //makeFieldsEditable();
-        }
-    }
-
-
-    //function handleContinueClick() {
-    //    if (complaintFormStep === 1) {
-    //        // Go to complaintFormStep 2
-    //        section2.style.display = "none";
-    //        section3.style.display = "block";
-    //        backBtn.style.display = "inline-block";
-    //        complaintFormStep = 2;
-
-
-
-    //    } else if (complaintFormStep === 2) {
-    //        // Go to complaintFormStep 3
-    //        section2.style.display = "block";
-    //        section3.style.display = "block";
-    //        continueBtn.style.display = "none";
-    //        submitBtn.style.display = "inline-block";
-    //        complaintFormStep = 3;
-    //        const allFields = document.querySelectorAll('.products_form input, .products_form textarea, .products_form select');
-    //        allFields.forEach(field => {
-    //            field.disabled = true;
-    //        });
-    //    }
-    //}
-
-    //function handleBackClick() {
-    //    if (complaintFormStep === 2) {
-    //        // Back to complaintFormStep 1
-    //        section2.style.display = "block";
-    //        section3.style.display = "none";
-    //        backBtn.style.display = "none";
-    //        complaintFormStep = 1;
-    //    } else if (complaintFormStep === 3) {
-    //        // Back to complaintFormStep 2
-    //        section2.style.display = "none";
-    //        section3.style.display = "block";
-    //        continueBtn.style.display = "inline-block";
-    //        submitBtn.style.display = "none";
-    //        complaintFormStep = 2;
-    //        const allFields = document.querySelectorAll('.products_form input, .products_form textarea, .products_form select');
-    //        allFields.forEach(field => {
-    //            field.disabled = false;
-    //        });
-    //    }
-    //}
-
-    // FORM FIELD SYNCHRONIZATION LOGIC
 
     function syncFormFields(sourceIds, targetIds, isChecked) {
         sourceIds.forEach((sourceId, index) => {
@@ -237,6 +238,7 @@
         continueBtn.addEventListener("click", handleContinueClick);
         backBtn.addEventListener("click", handleBackClick);
     }
+   
 
     // INITIALIZATION
     initializeStepNavigation();

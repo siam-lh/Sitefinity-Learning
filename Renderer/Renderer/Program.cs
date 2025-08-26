@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-
+using NWebsec.AspNetCore.Middleware;
 using Progress.Sitefinity.AspNetCore;
 using Progress.Sitefinity.AspNetCore.FormWidgets;
 using Renderer.Models;
-using NWebsec.AspNetCore.Middleware;
+using Renderer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,7 @@ builder.Services.AddSitefinity();
 builder.Services.AddViewComponentModels();
 builder.Services.AddFormViewComponentModels();
 
+builder.Services.AddScoped<IElectronicsProductService, ElectronicsProductService>();
 builder.Services.AddScoped<IMegaMenuModel, MegaMenuModel>();
 builder.Services.AddScoped<ICustomNavigationModel, CustomNavigationModel>();
 builder.Services.AddScoped<IExtendedBreadcumbModel, ExtendedBreadcumbModel>();

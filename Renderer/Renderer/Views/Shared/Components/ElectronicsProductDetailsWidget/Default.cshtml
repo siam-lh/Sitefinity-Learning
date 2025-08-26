@@ -1,0 +1,37 @@
+﻿@model Renderer.ViewModels.ElectronicsProductViewModel
+<div class="container pt-5">
+    <div class="mx-0 mx-xl-5">
+        
+        @if (Model.Id is null)
+        {
+            <div class="d-flex justify-content-center align-items-center">
+                <h1>Product Details Not Available</h1>
+            </div>
+        }
+        else
+        {
+
+            <div class="row g-5" >
+               
+                <div class="col-12 col-xl-6">
+                    @if (!string.IsNullOrEmpty(Model.ImageDefaultUrl))
+                    {
+                        <img src="@Model.ImageDefaultUrl" class="img-fluid" alt="@Model.Title" />
+                    }
+                </div>
+                <div class="col-12 col-xl-6">
+                    <div>
+                        <h5 class="text-danger fs-2 fw-bold lh-sm">@Model.Title</h5>
+                        <p class="fs-6">
+                            @Html.Raw(Model.Description)
+                        </p>
+                        <div class="d-flex gap-2 pt-5 button-container">
+                            <button class="btn-where-to-buy">Where To Buy</button>
+                            <button class="btn-key-features">Key Features</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿
+@model IEnumerable<Renderer.ViewModels.ElectronicsProductViewModel>
+<div class="container">
+    @if (!Model.Any())
+    {
+        <div class="d-flex justify-content-center align-items-center">
+            <h1>No Products Available</h1>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 mb-5 px-3">
+                    <div class="card h-100 d-flex flex-column overflow-hidden">
+                        @if (!string.IsNullOrEmpty(product.ImageDefaultUrl))
+                        {
+                            <img src="@product.ImageDefaultUrl" class="card-img-top" alt="@product.Title" style="max-height: auto;" />
+                        }
+                        <div class="card-body d-flex flex-column flex-grow-1">
+                            <h5 class="card-title fw-bold fs-3">@product.Title</h5>
+                            <p class="card-text text-truncate-multiline flex-grow-1 mb-2">
+                                @{
+                                    string description = product.Description ?? "";
+                                    string plainText = System.Text.RegularExpressions.Regex.Replace(description, "<.*?>", "");
+                                    string trimmedText = plainText.Length > 100 ? plainText.Substring(0, 100) + "..." : plainText;
+                                }
+                                @trimmedText
+                            </p>
+                        </div>
+                        <div class="card-footer bg-danger border-0 p-2 text-center btn bg-danger">
+                            <a href="/products/product-details?productId=@product.Id" class="fw-bold w-100 text-white text-decoration-none border-0 d-block ">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+

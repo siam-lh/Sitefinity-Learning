@@ -25,6 +25,10 @@ a {
     cursor: pointer;
     display: inline;
 }
+img{
+    display:block;
+    max-inline-size:100%;
+}
 /*Custom Navigation widget styling*/
 
 .custom-mega-navbar {
@@ -352,6 +356,160 @@ custom-mega-navbar .navigation-dropdown-menu:not(.sub-menu)::before {
 #backBtn {
     display: none;
 }
+
+.complaint-progress-bar {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+/* Container */
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 600px;
+    position: relative;
+    display:none;
+/*    border:2px solid red;*/
+}
+
+/* Track line (gray) */
+.progress-track {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    width: calc(100% - 40px); 
+    height: 4px;
+    background: #d3d3d3;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+/* Progress bar (green) */
+.progress {
+    position: absolute;
+    top: 50%;
+    left: 20px; 
+    height: 4px;
+    background: #4CAF50;
+    z-index: 1;
+    transition: width 0.3s ease;
+    transform: translateY(-50%);
+    width: 0; 
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    flex: 1;
+    position: relative;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d3d3d3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.active .circle {
+    background: #4CAF50;
+}
+
+.completed .circle {
+    background: #4CAF50;
+}
+
+.completed .circle::before {
+        content: "✔";
+        font-size: 20px;
+    }
+
+/* Labels */
+.label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #d3d3d3;
+}
+
+.active .label,
+.completed .label {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+
+
+
+/*Electronic products*/
+.text-truncate-multiline {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.btn-where-to-buy {
+    flex: 3; 
+    padding: 8px 16px;
+    color: white;
+    background-color: red;
+    border: none;
+    font-weight: 700;
+    font-size: 18px;
+    min-height: 50px;
+    border-radius: 4px;
+}
+
+.btn-key-features {
+    flex: 1; 
+    padding: 8px 16px;
+    color: white;
+    background-color: gray;
+    border: none;
+    font-weight: 700;
+    font-size: 18px;
+    min-height: 50px;
+    border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .btn-where-to-buy,
+    .btn-key-features {
+        font-size: 16px;
+        min-height: 45px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .button-container {
+        flex-direction: column !important;
+    }
+
+    .btn-where-to-buy,
+    .btn-key-features {
+        flex: none;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .btn-key-features {
+        margin-bottom: 0;
+    }
+}
+/*product complaint form end here*/
+
 @media (max-width: 576px) {
     .horizontal-tabs-navbar {
         padding: 2px 20px;

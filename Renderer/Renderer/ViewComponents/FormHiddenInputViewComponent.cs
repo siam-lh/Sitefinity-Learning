@@ -5,7 +5,7 @@ using Progress.Sitefinity.Renderer.Forms;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityFormWidget(FormFieldType.ShortText, Title = "Hidden input", EmptyIconText = "Custom empty text", EmptyIcon = "eye-slash")]
+    //[SitefinityFormWidget(FormFieldType.ShortText, Title = "Hidden input", EmptyIconText = "Custom empty text", EmptyIcon = "eye-slash")]
     public class FormHiddenInputViewComponent : ViewComponent
     {
         /// <summary>

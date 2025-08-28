@@ -12,7 +12,7 @@ using Renderer.ViewModels;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityWidget]
+    //[SitefinityWidget]
     public class CarModelWidgetViewComponent : ViewComponent
     {
         private readonly IRestClient restClient;

@@ -5,7 +5,7 @@
     using Renderer.Entities;
     using Renderer.Models;
 
-    [SitefinityWidget(Title = "Custom Navigation")]
+    //[SitefinityWidget(Title = "Custom Navigation")]
     public class CustomNavigationViewComponent : ViewComponent
     {
         private readonly ICustomNavigationModel model;

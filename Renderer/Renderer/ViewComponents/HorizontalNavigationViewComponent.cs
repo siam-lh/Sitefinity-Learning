@@ -5,7 +5,7 @@
     using Renderer.Entities;
     using Renderer.Models;
 
-    [SitefinityWidget(Title = "MarkUp Tab Navigation")]
+    //[SitefinityWidget(Title = "MarkUp Tab Navigation")]
     public class HorizontalNavigationViewComponent : ViewComponent
     {
         private readonly ICustomNavigationModel model;

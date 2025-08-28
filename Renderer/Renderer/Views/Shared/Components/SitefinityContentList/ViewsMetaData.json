@@ -1,0 +1,30 @@
+{
+  "List.QuantumCard": [
+    {
+      "fieldTitle": "ProductImage",
+      "fieldType": "RelatedImage"
+    },
+    {
+      "fieldTitle": "Title",
+      "fieldType": "ShortText"
+    }
+    ,
+    {
+      "fieldTitle": "Description",
+      "fieldType": "LongText"
+    },
+    {
+      "fieldTitle": "Featured",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldTitle": "PublicationDate",
+      "fieldType": "DateTime"
+    },
+    {
+      "fieldTitle": "Author",
+      "fieldType": "ShortText"
+    }
+  ]
+}
+

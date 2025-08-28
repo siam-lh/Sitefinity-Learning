@@ -4,7 +4,7 @@ using Progress.Sitefinity.AspNetCore.Widgets.Models.Form;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityWidget(Title = "Complaints Form (Fixed)", Category = "Forms")]
+    //[SitefinityWidget(Title = "Complaints Form (Fixed)", Category = "Forms")]
     public class ComplaintsFormViewComponent : ViewComponent
     {
         // Complaints form GUID

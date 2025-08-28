@@ -5,7 +5,7 @@
     using Renderer.Entities;
     using Renderer.Models;
 
-    [SitefinityWidget(Title = "Extended Breadcrumb Navigation")]
+    //[SitefinityWidget(Title = "Extended Breadcrumb Navigation")]
     public class ExtendedBreadcrumbViewComponent : ViewComponent
     {
         private readonly IExtendedBreadcumbModel model;

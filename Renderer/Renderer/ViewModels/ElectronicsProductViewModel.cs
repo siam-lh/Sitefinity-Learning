@@ -6,5 +6,7 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageDefaultUrl { get; set; }
+        public string ItemDefaultUrl { get; set; }
+
     }
 }

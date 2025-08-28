@@ -6,7 +6,7 @@ using Renderer.ViewModels;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityFormWidget(FormFieldType.ShortText, Title = "Serial Widget")]
+    //[SitefinityFormWidget(FormFieldType.ShortText, Title = "Serial Widget")]
     public class SerialWidgetViewComponent : ViewComponent
     {
 

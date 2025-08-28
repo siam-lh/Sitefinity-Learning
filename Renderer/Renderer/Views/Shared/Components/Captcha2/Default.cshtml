@@ -1,0 +1,33 @@
+﻿@* @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Progress.Sitefinity.AspNetCore
+
+@using Progress.Sitefinity.AspNetCore.ViewComponents;
+@using Progress.Sitefinity.AspNetCore.Web
+@inject IRenderContext renderContext;
+
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        section-name="Bottom"
+        async defer></script>
+<script src="~/js/captcha2.js" section-name="Top"></script>
+
+<div>
+    <div id="captchav2" class="@("mb-3 " + (renderContext.IsEdit ? "pe-none" : ""))"></div>
+</div> *@
+
+
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Progress.Sitefinity.AspNetCore
+@using Progress.Sitefinity.AspNetCore.ViewComponents;
+@using Progress.Sitefinity.AspNetCore.Web
+@inject IRenderContext renderContext;
+
+<!-- Load captcha2.js first, then reCAPTCHA API -->
+<script src="~/js/captcha2.js" section-name="Bottom"></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        section-name="Bottom"
+        async defer></script>
+
+<div>
+    <div id="captchav2" class="@("mb-3 " + (renderContext.IsEdit ? "pe-none" : ""))"></div>
+</div>

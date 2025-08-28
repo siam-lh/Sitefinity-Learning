@@ -9,7 +9,7 @@ using Renderer.ViewModels;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityWidget]
+    //[SitefinityWidget]
     public class CompanyWidgetViewComponent : ViewComponent
     {
         private readonly IRestClient restClient;

@@ -19,6 +19,7 @@ namespace Renderer.ViewComponents
         {
             try
             {
+                
                 var productsVM = await productService.GetAllProductsAsync();
                 return View("Default", productsVM);
             }

@@ -23,7 +23,7 @@ namespace Renderer.Services
                 new GetItemArgs()
                 {
                     Id = productId,
-                    Fields = new[] { "Id", "Title", "Description", "ProductImage" }
+                    Fields = new[] { "Id", "Title", "Description", "ProductImage" , "ItemDefaultUrl" }
                 });
 
             if (product == null)
@@ -52,7 +52,7 @@ namespace Renderer.Services
                 },
                 new GetAllArgs()
                 {
-                    Fields = new[] { "Id", "Title", "Description", "ProductImage" }
+                    Fields = new[] { "Id", "Title", "Description", "ProductImage", "ItemDefaultUrl" }
                 });
 
             return products.Items.Select(product => new ElectronicsProductViewModel
@@ -60,7 +60,8 @@ namespace Renderer.Services
                 Id = product.Id,
                 Title = product.Title,
                 Description = product.Description,
-                ImageDefaultUrl = ImageUrl(product.ProductImage)
+                ImageDefaultUrl = ImageUrl(product.ProductImage),
+                ItemDefaultUrl=product.ItemDefaultUrl
             }).ToList();
         }
 

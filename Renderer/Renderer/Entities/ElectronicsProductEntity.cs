@@ -7,6 +7,7 @@ namespace Renderer.ViewModels
     {
         public string Title { get; set; }
         public string Description { get; set; }
+        public string ItemDefaultUrl {  get; set; }
         public IEnumerable<LogoViewModel> ProductImage { get; set; } = new List<LogoViewModel>();
     }
 }

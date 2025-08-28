@@ -10,7 +10,7 @@ using Renderer.Entities;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityFormWidget(FormFieldType.ShortText, Title = "Custom Date input", EmptyIconText = "Enter date", EmptyIcon = "calendar")]
+    //[SitefinityFormWidget(FormFieldType.ShortText, Title = "Custom Date input", EmptyIconText = "Enter date", EmptyIcon = "calendar")]
     public class DateInputViewComponent : ViewComponent
     {
         private FormWidgetsStyleGenerator formWidgetsStyleGenerator;

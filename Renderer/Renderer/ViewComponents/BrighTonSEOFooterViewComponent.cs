@@ -6,7 +6,7 @@ using Progress.Sitefinity.AspNetCore.ViewComponents;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityWidget]
+    //[SitefinityWidget]
     public class BrighTonSEOFooterViewComponent : ViewComponent
     {
         // Invokes the view.

@@ -5,7 +5,7 @@ using Renderer.ViewModels;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityWidget]
+    //[SitefinityWidget]
     public class SideBarViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke()

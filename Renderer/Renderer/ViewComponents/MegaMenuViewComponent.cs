@@ -6,7 +6,7 @@ using Renderer.Models;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityWidget(Title = "Mega Menu", Category = WidgetCategory.Content, Section = WidgetSection.NavigationAndSearch, EmptyIconText = "No pages have been published", EmptyIconAction = EmptyLinkAction.None, EmptyIcon = "file-text-o")]
+    //[SitefinityWidget(Title = "Mega Menu", Category = WidgetCategory.Content, Section = WidgetSection.NavigationAndSearch, EmptyIconText = "No pages have been published", EmptyIconAction = EmptyLinkAction.None, EmptyIcon = "file-text-o")]
     public class MegaMenuViewComponent : ViewComponent
     {
         private IMegaMenuModel megaMenuModel;

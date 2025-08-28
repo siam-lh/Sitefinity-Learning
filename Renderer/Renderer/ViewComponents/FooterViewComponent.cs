@@ -6,7 +6,7 @@ using Progress.Sitefinity.AspNetCore.ViewComponents;
 
 namespace Renderer.ViewComponents
 {
-    [SitefinityWidget]
+    //[SitefinityWidget]
     public class FooterViewComponent : ViewComponent
     {
         // Invokes the view.
